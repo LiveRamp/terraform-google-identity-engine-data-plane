@@ -1,0 +1,16 @@
+# BEGIN TERRAFORM MANAGED BLOCK
+"apiVersion": "backstage.io/v1alpha1"
+"kind": "Location"
+"metadata":
+  "annotations":
+    "github.com/project-slug": "LiveRamp/portrait-engine-data-plane-tf-module"
+    "github.com/team-slug": "LiveRamp/identity-portrait-engine-admin"
+  "description": "Identity/Portrait-Engine - Data plane Terraform module"
+  "name": "portrait-engine-data-plane-tf-module"
+  "tags":
+  - "identity"
+  - "portrait-engine"
+  - "data-plane"
+  - "terraform"
+"spec": {}
+# END TERRAFORM MANAGED BLOCK
