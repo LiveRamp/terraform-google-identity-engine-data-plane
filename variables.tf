@@ -28,17 +28,6 @@ variable "environment" {
   }
 }
 
-variable "control_plane_project" {
-  type        = string
-  description = "The GCP project in which customer data will be processed."
-}
-
-variable "control_plane_service_account" {
-  type        = string
-  default     = "orchestration"
-  description = "Kubernetes Service Account name to configure WorkloadIdentity with the Control-Plane/Google-Service-Account"
-}
-
 variable "data_plane_project" {
   type        = string
   description = "The GCP project in which customer data will be stored."
@@ -49,19 +38,24 @@ variable "storage_location" {
   description = "The storage location for BigQuery and GCS."
 }
 
-variable "kms_self_link" {
+variable "gcp_region" {
   type        = string
-  description = "The KMS instance to store this customer & countries key in"
+  description = "The GCP region to be used"
 }
 
-variable "build_subnet_self_link" {
+variable "dataproc_subnet_ip4_cidr" {
   type        = string
-  description = "The self link to the regional subnet this customer should use"
+  description = "Subnet used for Dataproc clusters"
 }
 
-variable "network_self_link" {
-  type    = string
-  default = null
+variable "key_management_location" {
+  type        = string
+  description = "The key management location for KMS"
+}
+
+variable "tenant_orchestration_sa" {
+  type        = string
+  description = "Tenant Orchestration ServiceAccount for remote execution"
 }
 
 variable "data_editors" {
@@ -82,11 +76,6 @@ variable "data_viewers" {
   description = "The users, groups & service accounts that should have read only access to this customers data"
 }
 
-variable "ingestion_service_account_name" {
-  type        = string
-  description = "The service account attached to the cloud function that will copy customer data to this bucket."
-}
-
 variable "data_retention_period_days" {
   type        = number
   description = "The number of days this customers data will be stored before its automatically deleted"
@@ -97,4 +86,35 @@ variable "key_rotation_period_days" {
   type        = number
   description = "The frequency at which the crypto key will automatically rotate (days)"
   default     = 90
+}
+
+variable "service_perimeter" {
+  type = object({
+    configure             = bool
+    org_access_policy_id  = string,
+    allow_list_identities = list(string),
+    perimeter_projects    = set(string),
+    restricted_services   = list(string),
+    ingress_policies = list(object({
+      from = any
+      to   = any
+      })
+    )
+    egress_policies = list(object({
+      from = any
+      to   = any
+      })
+    )
+  })
+}
+
+variable "metastore_cidr_ip_address" {
+  type        = string
+  description = "Portrait Engine Metastore CloudSQL instance CIDR IP address"
+}
+
+variable "idapi_cidr_ip_addresses" {
+  type        = list(string)
+  default     = []
+  description = "Portrait Engine ID-API instance CIDR IP addresses"
 }

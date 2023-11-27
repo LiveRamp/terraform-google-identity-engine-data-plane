@@ -1,4 +1,4 @@
-resource "google_bigquery_dataset" "customer_dataset" {
+resource "google_bigquery_dataset" "tenant_dataset" {
   project       = var.data_plane_project
   dataset_id    = replace(lower("${var.installation_name}_${var.name}_${var.country_code}"), "-", "_")
   friendly_name = "${title(var.name)} ${upper(var.country_code)} dataset"
@@ -6,7 +6,7 @@ resource "google_bigquery_dataset" "customer_dataset" {
   location      = var.storage_location
 
   default_encryption_configuration {
-    kms_key_name = google_kms_crypto_key.customer_crypto_key.id
+    kms_key_name = google_kms_crypto_key.tenant_crypto_key.id
   }
 
   default_partition_expiration_ms = var.data_retention_period_days * 86400000
@@ -24,7 +24,7 @@ resource "google_bigquery_dataset" "customer_dataset" {
 
   dynamic "access" {
     for_each = toset(concat(
-      [google_service_account.tenant_orchestration_service_account.email],
+      [google_service_account.tenant_data_access.email],
       var.data_editors.users,
       var.data_editors.service_accounts
     ))
@@ -62,6 +62,6 @@ resource "google_bigquery_dataset" "customer_dataset" {
   }
 
   depends_on = [
-    google_kms_crypto_key.customer_crypto_key, google_kms_crypto_key_iam_member.key_user
+    google_kms_crypto_key.tenant_crypto_key, google_kms_crypto_key_iam_member.key_user
   ]
 }
