@@ -1,3 +1,9 @@
+resource "google_project_iam_member" "serviceAccount_user" {
+  project = var.data_plane_project
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:${google_service_account.tenant_data_access.email}"
+}
+
 resource "google_project_iam_member" "dataproc_worker" {
   project = var.data_plane_project
   role    = "roles/dataproc.worker"
