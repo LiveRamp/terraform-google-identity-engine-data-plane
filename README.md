@@ -1,2 +1,2 @@
-# portrait-engine-data-plane-tf-module
+# terraform-google-portrait-engine-data-plane
 Identity/Portrait-Engine - Data plane Terraform module
