@@ -1,7 +1,7 @@
 resource "google_compute_address" "cloud_nat_static_ip_address" {
   project = var.data_plane_project
   region  = var.gcp_region
-  count   = 2
+  count   = var.enable_dataproc_network ? 2 : 0
   name    = lower("${var.installation_name}-${var.gcp_region}-nat-ip-${count.index}")
 }
 
