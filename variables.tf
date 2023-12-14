@@ -88,26 +88,6 @@ variable "key_rotation_period_days" {
   default     = 90
 }
 
-variable "service_perimeter" {
-  type = object({
-    configure             = bool
-    org_access_policy_id  = string,
-    allow_list_identities = list(string),
-    perimeter_projects    = set(string),
-    restricted_services   = list(string),
-    ingress_policies = list(object({
-      from = any
-      to   = any
-      })
-    )
-    egress_policies = list(object({
-      from = any
-      to   = any
-      })
-    )
-  })
-}
-
 variable "metastore_cidr_ip_address" {
   type        = string
   description = "Portrait Engine Metastore CloudSQL instance CIDR IP address"
