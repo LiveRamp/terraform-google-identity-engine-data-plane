@@ -20,12 +20,7 @@ variable "country_code" {
 
 variable "environment" {
   type        = string
-  description = "The environment this infrastructure is supported (One of: dev, staging or prod)"
-
-  validation {
-    condition     = contains(["dev", "demo", "staging", "prod"], var.environment)
-    error_message = "Valid values for var: environment are (dev, demo, staging, prod)."
-  }
+  description = "The environment this infrastructure is supported (eg.: dev, staging or prod)"
 }
 
 variable "data_plane_project" {
