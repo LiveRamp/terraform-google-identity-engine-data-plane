@@ -20,12 +20,7 @@ variable "country_code" {
 
 variable "environment" {
   type        = string
-  description = "The environment this infrastructure is supported (One of: dev, staging or prod)"
-
-  validation {
-    condition     = contains(["dev", "demo", "staging", "prod"], var.environment)
-    error_message = "Valid values for var: environment are (dev, demo, staging, prod)."
-  }
+  description = "The environment this infrastructure is supported (eg.: dev, staging or prod)"
 }
 
 variable "data_plane_project" {
@@ -86,26 +81,6 @@ variable "key_rotation_period_days" {
   type        = number
   description = "The frequency at which the crypto key will automatically rotate (days)"
   default     = 90
-}
-
-variable "service_perimeter" {
-  type = object({
-    configure             = bool
-    org_access_policy_id  = string,
-    allow_list_identities = list(string),
-    perimeter_projects    = set(string),
-    restricted_services   = list(string),
-    ingress_policies = list(object({
-      from = any
-      to   = any
-      })
-    )
-    egress_policies = list(object({
-      from = any
-      to   = any
-      })
-    )
-  })
 }
 
 variable "metastore_cidr_ip_address" {
