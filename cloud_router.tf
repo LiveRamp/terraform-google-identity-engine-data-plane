@@ -1,16 +1,17 @@
 resource "google_compute_address" "cloud_nat_static_ip_address" {
   project = var.data_plane_project
   region  = var.gcp_region
-  count   = 2
+  count   = var.enable_dataproc_network ? 2 : 0
   name    = lower("${var.installation_name}-${var.gcp_region}-nat-ip-${count.index}")
 }
 
 module "cloud_router" {
+  count   = var.enable_dataproc_network ? 1 : 0
   source  = "terraform-google-modules/cloud-router/google"
   version = "~> 1.2.0"
   name    = lower("${var.installation_name}-${var.gcp_region}-router")
   project = var.data_plane_project
-  network = google_compute_network.vpc_network.name
+  network = google_compute_network.vpc_network[*].name
   region  = var.gcp_region
 
   nats = [{

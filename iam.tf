@@ -17,8 +17,9 @@ resource "google_project_iam_member" "dataproc_editor" {
 }
 
 resource "google_compute_subnetwork_iam_member" "vpc_subnetwork_user" {
+  count      = var.enable_dataproc_network ? 1 : 0
   project    = var.data_plane_project
-  subnetwork = google_compute_subnetwork.dataproc_subnet.name
+  subnetwork = google_compute_subnetwork.dataproc_subnet[*].name
   role       = "roles/compute.networkUser"
   member     = "serviceAccount:${google_service_account.tenant_data_access.email}"
 }

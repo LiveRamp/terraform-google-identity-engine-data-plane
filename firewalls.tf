@@ -1,7 +1,8 @@
 resource "google_compute_firewall" "allow_portrait_engine_metastore_egress" {
-  project     = google_compute_network.vpc_network.project
+  count       = var.enable_dataproc_network ? 1 : 0
+  project     = google_compute_network.vpc_network[*].project
   name        = "allow-${var.installation_name}-metastore-egress"
-  network     = google_compute_network.vpc_network.name
+  network     = google_compute_network.vpc_network[*].name
   direction   = "EGRESS"
   priority    = "1000"
   description = "Allow EGRESS to Portrait Engine Metastore CloudSQL instance"
@@ -20,9 +21,10 @@ resource "google_compute_firewall" "allow_portrait_engine_metastore_egress" {
 }
 
 resource "google_compute_firewall" "allow_portrait_engine_idapi_egress" {
-  project     = google_compute_network.vpc_network.project
+  count       = var.enable_dataproc_network ? 1 : 0
+  project     = google_compute_network.vpc_network[*].project
   name        = "allow-${var.installation_name}-idapi-egress"
-  network     = google_compute_network.vpc_network.name
+  network     = google_compute_network.vpc_network[*].name
   direction   = "EGRESS"
   priority    = "1000"
   description = "Allow EGRESS to LiveRamp ID-API instance"
@@ -39,10 +41,11 @@ resource "google_compute_firewall" "allow_portrait_engine_idapi_egress" {
 }
 
 module "dataproc-firewall-rules" {
+  count        = var.enable_dataproc_network ? 1 : 0
   source       = "terraform-google-modules/network/google//modules/firewall-rules"
   version      = "6.0.1"
   project_id   = var.data_plane_project
-  network_name = google_compute_network.vpc_network.name
+  network_name = google_compute_network.vpc_network[*].name
 
   rules = [
     {

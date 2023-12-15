@@ -19,7 +19,7 @@ locals {
 
 resource "google_kms_key_ring" "kms" {
   project  = var.data_plane_project
-  name     = lower("${var.installation_name}-${var.country_code}-kms")
+  name     = lower("${var.installation_name}-${var.name}-${var.country_code}-kms")
   location = var.key_management_location
 }
 
