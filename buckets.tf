@@ -1,19 +1,40 @@
 locals {
-  input_bucket  = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-input")
-  build_bucket  = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-build")
-  output_bucket = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-output")
+  buckets = {
+    input_bucket  = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-input")
+    build_bucket  = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-build")
+    output_bucket = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-output")
+  }
 }
 
-resource "google_storage_bucket" "tenant_build_bucket" {
-  provider                    = google-beta
-  depends_on                  = [google_kms_crypto_key.tenant_crypto_key, google_kms_crypto_key_iam_member.key_user]
-  project                     = var.data_plane_project
-  name                        = local.build_bucket
-  location                    = var.storage_location
-  uniform_bucket_level_access = true
-  encryption {
-    default_kms_key_name = google_kms_crypto_key.tenant_crypto_key.id
+module "gcs_buckets" {
+  source        = "terraform-google-modules/cloud-storage/google"
+  count         = var.enable_buckets ? 1 : 0
+  version       = "~> 5.0"
+  project_id    = var.data_plane_project
+  location      = var.storage_location
+  storage_class = "STANDARD"
+  names = [
+    local.buckets.input_bucket,
+    local.buckets.build_bucket,
+    local.buckets.output_bucket
+  ]
+  prefix               = ""
+  encryption_key_names = var.enable_kms ? { default_kms_key_name = google_kms_crypto_key.tenant_crypto_key[count.index].id } : {}
+  versioning = {
+    "${local.buckets.input_bucket}"  = false
+    "${local.buckets.build_bucket}"  = false
+    "${local.buckets.output_bucket}" = false
   }
+  lifecycle_rules = [
+    {
+      condition = {
+        age = var.data_retention_period_days
+      }
+      action = {
+        type = "Delete"
+      }
+    }
+  ]
   labels = {
     organisation-id = lower(var.organisation_id)
     tenant-name     = lower(var.name)
@@ -22,209 +43,34 @@ resource "google_storage_bucket" "tenant_build_bucket" {
     part-of         = "portrait-engine"
     installation    = var.installation_name
   }
-  lifecycle_rule {
-    condition {
-      age = var.data_retention_period_days
-    }
-    action {
-      type = "Delete"
-    }
-  }
-  versioning {
-    enabled = false
-  }
 }
 
-data "google_iam_policy" "tenant_build_bucket" {
-  binding {
-    role = "roles/storage.admin"
-    # Do not add people to this group its basically admin for everything and they could delete the bucket
-    # bucket changes should go through atlantis and be reviewed.
-    members = [
+module "storage_bucket-iam-bindings" {
+  source = "terraform-google-modules/iam/google//modules/storage_buckets_iam"
+  storage_buckets = [
+    local.buckets.input_bucket,
+    local.buckets.build_bucket,
+    local.buckets.output_bucket
+  ]
+  mode = "authoritative"
+
+  bindings = {
+    "roles/storage.admin" = [
       "projectOwner:${var.data_plane_project}"
     ]
-  }
-  # Write permission to this bucket
-  binding {
-    role = "roles/storage.objectAdmin"
-    members = concat(
+    "roles/storage.objectAdmin" = concat(
       local.prefixed_editor_list,
-      [
-        "serviceAccount:${google_service_account.tenant_data_access.email}",
-      ]
+      ["serviceAccount:${google_service_account.tenant_data_access.email}"]
     )
-  }
-  binding {
-    role = "roles/storage.objectViewer"
-    members = concat(
+    "roles/storage.objectViewer" = concat(
       local.prefixed_reader_list,
       [local.prefixed_dataproc_service_agent_mail]
     )
-  }
-  binding {
-    role = "roles/storage.legacyBucketReader"
-    members = concat(
+    "roles/storage.legacyBucketReader" = concat(
       local.prefixed_editor_list,
       local.prefixed_reader_list,
-      [
-        local.prefixed_dataproc_service_agent_mail,
-        "serviceAccount:${google_service_account.tenant_data_access.email}"
-      ]
+      [local.prefixed_dataproc_service_agent_mail],
+      ["serviceAccount:${google_service_account.tenant_data_access.email}"]
     )
   }
-}
-
-resource "google_storage_bucket_iam_policy" "tenant_build_bucket" {
-  bucket      = google_storage_bucket.tenant_build_bucket.name
-  policy_data = data.google_iam_policy.tenant_build_bucket.policy_data
-}
-
-resource "google_storage_bucket" "tenant_output_bucket" {
-  provider                    = google-beta
-  depends_on                  = [google_kms_crypto_key.tenant_crypto_key, google_kms_crypto_key_iam_member.key_user]
-  project                     = var.data_plane_project
-  name                        = local.output_bucket
-  location                    = var.storage_location
-  uniform_bucket_level_access = true
-  encryption {
-    default_kms_key_name = google_kms_crypto_key.tenant_crypto_key.id
-  }
-  labels = {
-    organisation-id = lower(var.organisation_id)
-    tenant-name     = lower(var.name)
-    country         = lower(var.country_code)
-    component       = "data-plane"
-    part-of         = "portrait-engine"
-    installation    = var.installation_name
-  }
-  lifecycle_rule {
-    condition {
-      age = var.data_retention_period_days
-    }
-    action {
-      type = "Delete"
-    }
-  }
-  versioning {
-    enabled = false
-  }
-}
-
-data "google_iam_policy" "tenant_output_bucket" {
-  binding {
-    role = "roles/storage.admin"
-    # Do not add people to this group its basically admin for everything and they could delete the bucket
-    # bucket changes should go through atlantis and be reviewed.
-    members = [
-      "projectOwner:${var.data_plane_project}"
-    ]
-  }
-  # Write permission to this bucket
-  binding {
-    role = "roles/storage.objectAdmin"
-    members = concat(
-      local.prefixed_editor_list,
-      [
-        "serviceAccount:${google_service_account.tenant_data_access.email}",
-      ]
-    )
-  }
-  binding {
-    role = "roles/storage.objectViewer"
-    members = concat(
-      local.prefixed_reader_list,
-      [local.prefixed_dataproc_service_agent_mail]
-    )
-  }
-  binding {
-    role = "roles/storage.legacyBucketReader"
-    members = concat(
-      local.prefixed_editor_list,
-      local.prefixed_reader_list,
-      [
-        local.prefixed_dataproc_service_agent_mail,
-        "serviceAccount:${google_service_account.tenant_data_access.email}"
-      ]
-    )
-  }
-}
-
-resource "google_storage_bucket_iam_policy" "tenant_output_bucket" {
-  bucket      = google_storage_bucket.tenant_output_bucket.name
-  policy_data = data.google_iam_policy.tenant_output_bucket.policy_data
-}
-
-resource "google_storage_bucket" "tenant_input_bucket" {
-  provider                    = google-beta
-  depends_on                  = [google_kms_crypto_key.tenant_crypto_key, google_kms_crypto_key_iam_member.key_user]
-  project                     = var.data_plane_project
-  name                        = local.input_bucket
-  location                    = var.storage_location
-  uniform_bucket_level_access = true
-  encryption {
-    default_kms_key_name = google_kms_crypto_key.tenant_crypto_key.id
-  }
-  labels = {
-    organisation-id = lower(var.organisation_id)
-    tenant-name     = lower(var.name)
-    country         = lower(var.country_code)
-    component       = "data-plane"
-    part-of         = "portrait-engine"
-    installation    = var.installation_name
-  }
-  lifecycle_rule {
-    condition {
-      age = var.data_retention_period_days
-    }
-    action {
-      type = "Delete"
-    }
-  }
-  versioning {
-    enabled = false
-  }
-}
-
-data "google_iam_policy" "tenant_input_bucket" {
-  binding {
-    role = "roles/storage.admin"
-    # Do not add people to this group its basically admin for everything and they could delete the bucket
-    # bucket changes should go through atlantis and be reviewed.
-    members = [
-      "projectOwner:${var.data_plane_project}"
-    ]
-  }
-  # Write permission to this bucket
-  binding {
-    role = "roles/storage.objectAdmin"
-    members = concat(
-      local.prefixed_editor_list,
-      [
-        "serviceAccount:${google_service_account.tenant_data_access.email}",
-      ]
-    )
-  }
-  binding {
-    role = "roles/storage.objectViewer"
-    members = concat(
-      local.prefixed_reader_list,
-      [local.prefixed_dataproc_service_agent_mail]
-    )
-  }
-  binding {
-    role = "roles/storage.legacyBucketReader"
-    members = concat(
-      local.prefixed_editor_list,
-      local.prefixed_reader_list,
-      [
-        local.prefixed_dataproc_service_agent_mail,
-        "serviceAccount:${google_service_account.tenant_data_access.email}"
-      ]
-    )
-  }
-}
-
-resource "google_storage_bucket_iam_policy" "tenant_input_bucket" {
-  bucket      = google_storage_bucket.tenant_input_bucket.name
-  policy_data = data.google_iam_policy.tenant_input_bucket.policy_data
 }
