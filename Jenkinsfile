@@ -54,7 +54,7 @@ String getLastGitLog() {
 void gitCommitAndPush() {
     sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
         sh "git status"
-
+        sh 'cat README.md'
 //        sh "git stash"
 //        sh "git fetch origin main:refs/remotes/origin/main"
 //        sh "git checkout main"
