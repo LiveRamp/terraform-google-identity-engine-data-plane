@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.17.0 markdown /terraform-docs > "README.md"'
-                    gitCommitAndPush()
+                    testPush()
                 }
             }
         }
@@ -53,5 +53,19 @@ void gitCommitAndPush() {
         sh "git add ."
         sh "git commit -m \"" + JENKINS_COMMIT_MESSAGE + "\""
         sh "git push -u origin main"
+    }
+}
+
+void testPush() {
+    sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
+        sh "git stash"
+        sh "git fetch origin minor/jenkins:refs/remotes/origin/minor/jenkins"
+        sh "git checkout minor/jenkins"
+        sh "git pull origin minor/jenkins"
+        sh "git stash pop"
+        sh "git status"
+        sh "git add ."
+        sh "git commit -m \"" + JENKINS_COMMIT_MESSAGE + "\""
+        sh "git push -u origin minor/jenkins"
     }
 }
