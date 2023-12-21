@@ -59,13 +59,13 @@ void gitCommitAndPush() {
 void testPush() {
     sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
         sh "git stash"
-        sh "git fetch origin minor/jenkins:refs/remotes/origin/minor/jenkins"
-        sh "git checkout minor/jenkins"
-        sh "git pull origin minor/jenkins"
+        sh "git fetch origin minor/jenkinsfile:refs/remotes/origin/minor/jenkinsfile"
+        sh "git checkout minor/jenkinsfile"
+        sh "git pull origin minor/jenkinsfile"
         sh "git stash pop"
         sh "git status"
         sh "git add ."
         sh "git commit -m \"" + JENKINS_COMMIT_MESSAGE + "\""
-        sh "git push -u origin minor/jenkins"
+        sh "git push -u origin minor/jenkinsfile"
     }
 }
