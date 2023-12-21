@@ -41,6 +41,9 @@ boolean jenkinsCommit() {
 
 void gitCommitAndPush() {
     sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
+        sh "echo DEBUG -START-"
+        sh "echo git --version"
+        sh "echo DEBUG -END-"
         sh "git stash"
         sh "git fetch origin main:refs/remotes/origin/main"
         sh "git checkout main"
