@@ -3,6 +3,8 @@
 
 JENKINS_GITHUB_CREDENTIALS = 'ops-github--github.com'
 
+JENKINS_COMMIT_MESSAGE = "[CI/Automation] Update README.md"
+
 pipeline {
 
     options {
@@ -21,7 +23,7 @@ pipeline {
     stages {
         stage('Generate Terraform Docs') {
             when {
-                expression { env.GIT_BRANCH != 'main' }
+                expression { env.GIT_BRANCH == 'main' && !jenkinsCommit() }
             }
             steps {
                 script {
@@ -33,6 +35,10 @@ pipeline {
     }
 }
 
+boolean jenkinsCommit() {
+    return !env.LAST_COMMIT_LOG.startsWith(JENKINS_COMMIT_MESSAGE)
+}
+
 void gitCommitAndPush() {
     sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
         sh "git stash"
@@ -42,7 +48,7 @@ void gitCommitAndPush() {
         sh "git stash pop"
         sh "git status"
         sh "git add ."
-        sh "git commit -m \"README.md updated\""
+        sh "git commit -m \"" + JENKINS_COMMIT_MESSAGE + "\""
         sh "git push -u origin main"
     }
 }
