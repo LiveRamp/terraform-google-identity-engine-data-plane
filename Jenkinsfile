@@ -30,6 +30,7 @@ pipeline {
         }
         stage('Generate Terraform Docs') {
             when {
+//                expression { env.GIT_BRANCH == 'main' && !jenkinsCommit() }
                 expression { env.GIT_BRANCH != 'main' && !jenkinsCommit() }
             }
             steps {
@@ -71,14 +72,7 @@ void testCommit() {
         sh "git config user.email \"jenkins@liveramp.com\""
         sh "git config user.name \"svc-jenkins\""
 
-        sh "git stash"
-        sh "git fetch origin minor/jenkinsfile:refs/remotes/origin/jenkinsfile"
-        sh "git checkout jenkinsfile"
-        sh "git pull origin jenkinsfile"
-        sh "git stash pop"
-        sh "git status"
-        sh "git add ."
-        sh "git commit -m \"" + JENKINS_COMMIT_MESSAGE + "\""
-        sh "git push -u origin jenkinsfile"
+        sh "git fetch"
+        sh "git branch -r"
     }
 }
