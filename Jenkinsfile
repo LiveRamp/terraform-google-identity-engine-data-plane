@@ -60,6 +60,7 @@ void gitCommitAndPush() {
 void testPush() {
     sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
         sh "git stash"
+        sh "git fetch"
         sh "git branch -r"
     }
 }
