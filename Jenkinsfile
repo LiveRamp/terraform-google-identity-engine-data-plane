@@ -64,11 +64,17 @@ void gitCommitAndPush() {
         sh "git push -u origin main"
     }
 }
-
+// minor/iiga2-1043/generate-tf-docs
 void testCommit() {
     sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
+        sh "git stash"
+        sh "git fetch origin minor/iiga2-1043/generate-tf-docs:refs/remotes/origin/minor/iiga2-1043/generate-tf-docs"
+        sh "git checkout minor/iiga2-1043/generate-tf-docs"
+        sh "git pull origin minor/iiga2-1043/generate-tf-docs"
+        sh "git stash pop"
+        sh "git status"
         sh "git add ."
         sh "git commit -m \"" + JENKINS_COMMIT_MESSAGE + "\""
-        sh "git push"
+        sh "git push -u origin main"
     }
 }
