@@ -20,14 +20,6 @@ pipeline {
     }
 
     stages {
-        stage('Environment') {
-            steps {
-                script {
-                    echo "Environment vars:"
-                    echo sh(script: 'env|sort', returnStdout: true)
-                }
-            }
-        }
         stage('Generate Terraform Docs') {
             when {
 //                expression { env.GIT_BRANCH == 'main' && !jenkinsCommit() }
@@ -53,8 +45,7 @@ String getLastGitLog() {
 
 void gitCommitAndPush() {
     sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
-        sh "git status"
-        sh 'cat README.md'
+        sh "git branch"
 //        sh "git stash"
 //        sh "git fetch origin main:refs/remotes/origin/main"
 //        sh "git checkout main"
