@@ -3,8 +3,6 @@
 
 JENKINS_GITHUB_CREDENTIALS = 'ops-github--github.com'
 
-agentLabel = 'ubuntu-2004'
-
 pipeline {
 
     options {
@@ -17,7 +15,7 @@ pipeline {
     }
 
     agent {
-        label agentLabel
+        label 'ubuntu-2004'
     }
 
     stages {
