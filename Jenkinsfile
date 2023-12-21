@@ -44,7 +44,11 @@ pipeline {
 }
 
 boolean jenkinsCommit() {
-    return !env.LAST_COMMIT_LOG.startsWith(JENKINS_COMMIT_MESSAGE)
+    return getLastGitLog().startsWith(JENKINS_COMMIT_MESSAGE)
+}
+
+String getLastGitLog() {
+    return sh(returnStdout: true, script: "git log -1 --pretty=%B")
 }
 
 void gitCommitAndPush() {
