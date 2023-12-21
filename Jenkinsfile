@@ -22,13 +22,12 @@ pipeline {
     stages {
         stage('Generate Terraform Docs') {
             when {
-//                expression { env.GIT_BRANCH == 'main' && !jenkinsCommit() }
-                expression { !jenkinsCommit() }
+                expression { env.GIT_BRANCH == 'main' && !jenkinsCommit() }
             }
             steps {
                 script {
                     sh 'docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.17.0 markdown /terraform-docs > "README.md"'
-                    testPush()
+                    gitCommitAndPush()
                 }
             }
         }
@@ -54,11 +53,5 @@ void gitCommitAndPush() {
         sh "git add ."
         sh "git commit -m \"" + JENKINS_COMMIT_MESSAGE + "\""
         sh "git push -u origin main"
-    }
-}
-
-void testPush() {
-    sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
-        sh "git remote show origin"
     }
 }
