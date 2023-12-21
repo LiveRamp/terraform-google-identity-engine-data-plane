@@ -22,7 +22,7 @@ pipeline {
     stages {
         stage('Generate Terraform Docs') {
             when {
-                expression { env.GIT_BRANCH == 'main' && !jenkinsCommit() }
+                expression { env.GIT_BRANCH != 'main' && !jenkinsCommit() }
             }
             steps {
                 script {
