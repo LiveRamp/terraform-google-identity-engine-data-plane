@@ -12,7 +12,6 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '50', daysToKeepStr: '30'))
     }
 
-
     triggers {
         githubPush()
     }
@@ -22,7 +21,6 @@ pipeline {
     }
 
     stages {
-
         stage('Generate Terraform Docs') {
             when {
                 expression { env.GIT_BRANCH != 'main' }
