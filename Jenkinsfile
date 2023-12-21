@@ -59,10 +59,8 @@ void gitCommitAndPush() {
 
 void testPush() {
     sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
-        sh "git status"
         sh "git stash"
-        sh "git status"
         sh "git fetch origin minor/iiga2-1043/generate-tf-docs:refs/remotes/origin/minor/iiga2-1043/generate-tf-docs"
-        sh "git branch"
+        sh "git checkout minor/iiga2-1043/generate-tf-docs"
     }
 }
