@@ -2,7 +2,6 @@
 @Library("liveramp-base@master") _
 
 JENKINS_GITHUB_CREDENTIALS = 'ops-github--github.com'
-
 JENKINS_COMMIT_MESSAGE = "[CI/Automation] Update README.md"
 
 pipeline {
