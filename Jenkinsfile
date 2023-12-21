@@ -72,7 +72,14 @@ void testCommit() {
         sh "git config user.email \"jenkins@liveramp.com\""
         sh "git config user.name \"svc-jenkins\""
 
-        sh "git fetch"
-        sh "git branch -r"
+        sh "git stash"
+        sh "git fetch origin minor/jenkinsfile:refs/remotes/origin/minor/jenkinsfile"
+        sh "git checkout minor/jenkinsfile"
+        sh "git pull origin minor/jenkinsfile"
+        sh "git stash pop"
+        sh "git status"
+        sh "git add ."
+        sh "git commit -m \"" + JENKINS_COMMIT_MESSAGE + "\""
+        sh "git push -u origin minor/jenkinsfile"
     }
 }
