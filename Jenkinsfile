@@ -20,6 +20,14 @@ pipeline {
     }
 
     stages {
+        stage('Environment') {
+            steps {
+                script {
+                    echo "Environment vars:"
+                    echo sh(script: 'env|sort', returnStdout: true)
+                }
+            }
+        }
         stage('Generate Terraform Docs') {
             when {
 //                expression { env.GIT_BRANCH == 'main' && !jenkinsCommit() }
