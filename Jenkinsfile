@@ -30,13 +30,12 @@ pipeline {
         }
         stage('Generate Terraform Docs') {
             when {
-//                expression { env.GIT_BRANCH == 'main' && !jenkinsCommit() }
-                expression { env.GIT_BRANCH != 'main' && !jenkinsCommit() }
+                expression { env.GIT_BRANCH == 'main' && !jenkinsCommit() }
             }
             steps {
                 script {
                     sh 'docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.17.0 markdown /terraform-docs > "README.md"'
-                    testCommit()
+                    gitCommitAndPush()
                 }
             }
         }
@@ -72,30 +71,5 @@ void gitCommitAndPush() {
         sh "git add ."
         sh "git commit -m \"" + JENKINS_COMMIT_MESSAGE + "\""
         sh "git push -u origin main"
-    }
-}
-
-void testCommit() {
-    sshagent(credentials: [JENKINS_GITHUB_CREDENTIALS]) {
-        GIT_CHANGES = sh(returnStdout: true, script: "git status")
-        NO_CHANGES = "nothing to commit, working tree clean"
-        if (GIT_CHANGES.contains(NO_CHANGES)) {
-            return
-        }
-
-        sh "git remote remove origin"
-        sh "git remote add origin git@github.com:LiveRamp/terraform-google-portrait-engine-data-plane.git"
-        sh "git config user.email \"jenkins@liveramp.com\""
-        sh "git config user.name \"svc-jenkins\""
-
-        sh "git stash"
-        sh "git fetch origin minor/jenkinsfile:refs/remotes/origin/minor/jenkinsfile"
-        sh "git checkout minor/jenkinsfile"
-        sh "git pull origin minor/jenkinsfile"
-        sh "git stash pop"
-        sh "git status"
-        sh "git add ."
-        sh "git commit -m \"" + JENKINS_COMMIT_MESSAGE + "\""
-        sh "git push -u origin minor/jenkinsfile"
     }
 }
