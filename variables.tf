@@ -99,21 +99,3 @@ variable "enable_dataproc_network" {
   description = "Configure network bits for Dataproc - VPC, firewall rules etc"
   default     = true
 }
-
-variable "enable_bigquery" {
-  type        = bool
-  description = "Configure BQ dataset"
-  default     = true
-}
-
-variable "enable_buckets" {
-  type        = bool
-  description = "Create build, input and output buckets"
-  default     = true
-}
-
-variable "enable_kms" {
-  type        = bool
-  description = "Configure KMS to encrypt build, input and output buckets"
-  default     = false
-}
