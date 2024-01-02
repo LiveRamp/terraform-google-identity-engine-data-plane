@@ -103,5 +103,5 @@ variable "enable_dataproc_network" {
 variable "enable_kms" {
   type        = bool
   description = "Configure KMS to encrypt build, input and output buckets"
-  default     = false
+  default     = true
 }
