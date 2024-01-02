@@ -99,3 +99,9 @@ variable "enable_dataproc_network" {
   description = "Configure network bits for Dataproc - VPC, firewall rules etc"
   default     = true
 }
+
+variable "enable_kms" {
+  type        = bool
+  description = "Configure KMS to encrypt build, input and output buckets"
+  default     = false
+}
