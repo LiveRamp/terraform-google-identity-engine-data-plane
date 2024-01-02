@@ -6,14 +6,19 @@ locals {
 
 resource "google_storage_bucket" "tenant_build_bucket" {
   provider                    = google-beta
-  depends_on                  = [google_kms_crypto_key.tenant_crypto_key, google_kms_crypto_key_iam_member.key_user]
+  depends_on                  = [google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings]
   project                     = var.data_plane_project
   name                        = local.build_bucket
   location                    = var.storage_location
   uniform_bucket_level_access = true
-  encryption {
-    default_kms_key_name = google_kms_crypto_key.tenant_crypto_key.id
+
+  dynamic "encryption" {
+    for_each = var.enable_kms ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
+    content {
+      default_kms_key_name = google_kms_crypto_key.tenant_crypto_key[0].id
+    }
   }
+
   labels = {
     organisation-id = lower(var.organisation_id)
     tenant-name     = lower(var.name)
@@ -22,6 +27,7 @@ resource "google_storage_bucket" "tenant_build_bucket" {
     part-of         = "portrait-engine"
     installation    = var.installation_name
   }
+
   lifecycle_rule {
     condition {
       age = var.data_retention_period_days
@@ -81,14 +87,19 @@ resource "google_storage_bucket_iam_policy" "tenant_build_bucket" {
 
 resource "google_storage_bucket" "tenant_output_bucket" {
   provider                    = google-beta
-  depends_on                  = [google_kms_crypto_key.tenant_crypto_key, google_kms_crypto_key_iam_member.key_user]
+  depends_on                  = [google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings]
   project                     = var.data_plane_project
   name                        = local.output_bucket
   location                    = var.storage_location
   uniform_bucket_level_access = true
-  encryption {
-    default_kms_key_name = google_kms_crypto_key.tenant_crypto_key.id
+
+  dynamic "encryption" {
+    for_each = var.enable_kms ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
+    content {
+      default_kms_key_name = google_kms_crypto_key.tenant_crypto_key[0].id
+    }
   }
+
   labels = {
     organisation-id = lower(var.organisation_id)
     tenant-name     = lower(var.name)
@@ -97,6 +108,7 @@ resource "google_storage_bucket" "tenant_output_bucket" {
     part-of         = "portrait-engine"
     installation    = var.installation_name
   }
+
   lifecycle_rule {
     condition {
       age = var.data_retention_period_days
@@ -156,14 +168,19 @@ resource "google_storage_bucket_iam_policy" "tenant_output_bucket" {
 
 resource "google_storage_bucket" "tenant_input_bucket" {
   provider                    = google-beta
-  depends_on                  = [google_kms_crypto_key.tenant_crypto_key, google_kms_crypto_key_iam_member.key_user]
+  depends_on                  = [google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings]
   project                     = var.data_plane_project
   name                        = local.input_bucket
   location                    = var.storage_location
   uniform_bucket_level_access = true
-  encryption {
-    default_kms_key_name = google_kms_crypto_key.tenant_crypto_key.id
+
+  dynamic "encryption" {
+    for_each = var.enable_kms ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
+    content {
+      default_kms_key_name = google_kms_crypto_key.tenant_crypto_key[0].id
+    }
   }
+
   labels = {
     organisation-id = lower(var.organisation_id)
     tenant-name     = lower(var.name)

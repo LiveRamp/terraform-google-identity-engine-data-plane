@@ -5,8 +5,11 @@ resource "google_bigquery_dataset" "tenant_dataset" {
   description   = "This dataset is for ${title(var.name)} ${upper(var.country_code)}"
   location      = var.storage_location
 
-  default_encryption_configuration {
-    kms_key_name = google_kms_crypto_key.tenant_crypto_key.id
+  dynamic "default_encryption_configuration" {
+    for_each = var.enable_kms ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
+    content {
+      kms_key_name = google_kms_crypto_key.tenant_crypto_key[0].id
+    }
   }
 
   default_partition_expiration_ms = var.data_retention_period_days * 86400000
@@ -62,6 +65,6 @@ resource "google_bigquery_dataset" "tenant_dataset" {
   }
 
   depends_on = [
-    google_kms_crypto_key.tenant_crypto_key, google_kms_crypto_key_iam_member.key_user
+    google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings
   ]
 }
