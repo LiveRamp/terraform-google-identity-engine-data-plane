@@ -40,7 +40,7 @@ module "kms_crypto_key-iam-bindings" {
   mode = "additive"
 
   bindings = {
-    "roles/cloudkms.cryptoKeyDecrypter" = concat(
+    "roles/cloudkms.cryptoKeyEncrypterDecrypter" = concat(
       local.prefixed_reader_list,
       local.prefixed_editor_list,
       [
