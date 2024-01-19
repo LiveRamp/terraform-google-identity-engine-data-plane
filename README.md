@@ -81,4 +81,4 @@ No requirements.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_tenant_data_access_email"></a> [tenant\_data\_access\_email](#output\_tenant\_data\_access\_email) | n/a |
+| <a name="output_tenant_data_access_svc_account"></a> [tenant\_data\_access\_svc\_account](#output\_tenant\_data\_access\_svc\_account) | n/a |
