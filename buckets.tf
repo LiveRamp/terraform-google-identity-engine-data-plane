@@ -24,7 +24,7 @@ resource "google_storage_bucket" "tenant_build_bucket" {
     tenant-name     = lower(var.name)
     country         = lower(var.country_code)
     component       = "data-plane"
-    part-of         = "portrait-engine"
+    part-of         = "identity-engine"
     installation    = var.installation_name
   }
 
@@ -105,7 +105,7 @@ resource "google_storage_bucket" "tenant_output_bucket" {
     tenant-name     = lower(var.name)
     country         = lower(var.country_code)
     component       = "data-plane"
-    part-of         = "portrait-engine"
+    part-of         = "identity-engine"
     installation    = var.installation_name
   }
 
@@ -186,7 +186,7 @@ resource "google_storage_bucket" "tenant_input_bucket" {
     tenant-name     = lower(var.name)
     country         = lower(var.country_code)
     component       = "data-plane"
-    part-of         = "portrait-engine"
+    part-of         = "identity-engine"
     installation    = var.installation_name
   }
   lifecycle_rule {
