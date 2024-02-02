@@ -3,10 +3,10 @@
 "kind": "Location"
 "metadata":
   "annotations":
-    "github.com/project-slug": "LiveRamp/terraform-google-portrait-engine-data-plane"
+    "github.com/project-slug": "LiveRamp/terraform-google-identity-engine-data-plane"
     "github.com/team-slug": "LiveRamp/identity-portrait-engine-admin"
-  "description": "Identity/Portrait-Engine - Data plane Terraform module"
-  "name": "terraform-google-portrait-engine-data-plane"
+  "description": "Identity/Identity-Engine - Data plane Terraform module"
+  "name": "terraform-google-identity-engine-data-plane"
   "tags":
   - "identity"
   - "portrait-engine"
