@@ -5,7 +5,7 @@ resource "google_compute_firewall" "allow_metastore_egress" {
   network     = google_compute_network.vpc_network[*].name
   direction   = "EGRESS"
   priority    = "1000"
-  description = "Allow EGRESS to Portrait Engine Metastore CloudSQL instance"
+  description = "Allow EGRESS to Identity Engine Metastore CloudSQL instance"
 
   allow {
     protocol = "tcp"
