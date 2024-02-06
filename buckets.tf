@@ -47,7 +47,6 @@ data "google_iam_policy" "tenant_build_bucket" {
       "projectOwner:${var.data_plane_project}"
     ]
   }
-  # Write permission to this bucket
   binding {
     role = "roles/storage.objectAdmin"
     members = concat(
