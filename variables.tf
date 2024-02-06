@@ -5,7 +5,7 @@ variable "organisation_id" {
 
 variable "installation_name" {
   type    = string
-  default = "portrait-engine"
+  default = "identity-engine"
 }
 
 variable "name" {

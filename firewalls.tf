@@ -1,11 +1,11 @@
-resource "google_compute_firewall" "allow_portrait_engine_metastore_egress" {
+resource "google_compute_firewall" "allow_metastore_egress" {
   count       = var.enable_dataproc_network ? 1 : 0
   project     = google_compute_network.vpc_network[*].project
   name        = "allow-${var.installation_name}-metastore-egress"
   network     = google_compute_network.vpc_network[*].name
   direction   = "EGRESS"
   priority    = "1000"
-  description = "Allow EGRESS to Portrait Engine Metastore CloudSQL instance"
+  description = "Allow EGRESS to Identity Engine Metastore CloudSQL instance"
 
   allow {
     protocol = "tcp"
@@ -20,7 +20,7 @@ resource "google_compute_firewall" "allow_portrait_engine_metastore_egress" {
   ]
 }
 
-resource "google_compute_firewall" "allow_portrait_engine_idapi_egress" {
+resource "google_compute_firewall" "allow_idapi_egress" {
   count       = var.enable_dataproc_network ? 1 : 0
   project     = google_compute_network.vpc_network[*].project
   name        = "allow-${var.installation_name}-idapi-egress"

@@ -62,7 +62,7 @@ void gitCommitAndPush() {
             return
         }
         sh "git remote remove origin"
-        sh "git remote add origin git@github.com:LiveRamp/terraform-google-portrait-engine-data-plane.git"
+        sh "git remote add origin git@github.com:LiveRamp/terraform-google-identity-engine-data-plane.git"
         sh "git config user.email \"jenkins@liveramp.com\""
         sh "git config user.name \"svc-jenkins\""
 

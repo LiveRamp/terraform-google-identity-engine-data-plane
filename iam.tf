@@ -37,7 +37,7 @@ resource "google_project_iam_member" "bigquery_job_user" {
 }
 
 # Required for spark connector to push work down to BigQuery
-resource "google_project_iam_member" "portrait_engine_sa_allow_bq_connector_push_down" {
+resource "google_project_iam_member" "allow_bq_connector_push_down" {
   project = var.data_plane_project
   role    = "roles/bigquery.readSessionUser"
   member  = "serviceAccount:${google_service_account.tenant_data_access.email}"

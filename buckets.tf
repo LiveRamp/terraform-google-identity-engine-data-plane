@@ -23,9 +23,8 @@ resource "google_storage_bucket" "tenant_build_bucket" {
     organisation-id = lower(var.organisation_id)
     tenant-name     = lower(var.name)
     country         = lower(var.country_code)
-    component       = "data-plane"
-    part-of         = "portrait-engine"
-    installation    = var.installation_name
+    part-of         = "identity-engine"
+    layer           = "data-plane"
   }
 
   lifecycle_rule {
@@ -44,13 +43,10 @@ resource "google_storage_bucket" "tenant_build_bucket" {
 data "google_iam_policy" "tenant_build_bucket" {
   binding {
     role = "roles/storage.admin"
-    # Do not add people to this group its basically admin for everything and they could delete the bucket
-    # bucket changes should go through atlantis and be reviewed.
     members = [
       "projectOwner:${var.data_plane_project}"
     ]
   }
-  # Write permission to this bucket
   binding {
     role = "roles/storage.objectAdmin"
     members = concat(
@@ -104,9 +100,8 @@ resource "google_storage_bucket" "tenant_output_bucket" {
     organisation-id = lower(var.organisation_id)
     tenant-name     = lower(var.name)
     country         = lower(var.country_code)
-    component       = "data-plane"
-    part-of         = "portrait-engine"
-    installation    = var.installation_name
+    part-of         = "identity-engine"
+    layer           = "data-plane"
   }
 
   lifecycle_rule {
@@ -125,13 +120,10 @@ resource "google_storage_bucket" "tenant_output_bucket" {
 data "google_iam_policy" "tenant_output_bucket" {
   binding {
     role = "roles/storage.admin"
-    # Do not add people to this group its basically admin for everything and they could delete the bucket
-    # bucket changes should go through atlantis and be reviewed.
     members = [
       "projectOwner:${var.data_plane_project}"
     ]
   }
-  # Write permission to this bucket
   binding {
     role = "roles/storage.objectAdmin"
     members = concat(
@@ -185,9 +177,8 @@ resource "google_storage_bucket" "tenant_input_bucket" {
     organisation-id = lower(var.organisation_id)
     tenant-name     = lower(var.name)
     country         = lower(var.country_code)
-    component       = "data-plane"
-    part-of         = "portrait-engine"
-    installation    = var.installation_name
+    part-of         = "identity-engine"
+    layer           = "data-plane"
   }
   lifecycle_rule {
     condition {
@@ -205,13 +196,10 @@ resource "google_storage_bucket" "tenant_input_bucket" {
 data "google_iam_policy" "tenant_input_bucket" {
   binding {
     role = "roles/storage.admin"
-    # Do not add people to this group its basically admin for everything and they could delete the bucket
-    # bucket changes should go through atlantis and be reviewed.
     members = [
       "projectOwner:${var.data_plane_project}"
     ]
   }
-  # Write permission to this bucket
   binding {
     role = "roles/storage.objectAdmin"
     members = concat(
