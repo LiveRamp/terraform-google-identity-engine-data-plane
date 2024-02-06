@@ -23,9 +23,8 @@ resource "google_storage_bucket" "tenant_build_bucket" {
     organisation-id = lower(var.organisation_id)
     tenant-name     = lower(var.name)
     country         = lower(var.country_code)
-    component       = "data-plane"
-    part-of         = var.installation_name
-    installation    = var.installation_name
+    part-of         = "identity-engine"
+    layer           = "data-plane"
   }
 
   lifecycle_rule {
@@ -104,9 +103,8 @@ resource "google_storage_bucket" "tenant_output_bucket" {
     organisation-id = lower(var.organisation_id)
     tenant-name     = lower(var.name)
     country         = lower(var.country_code)
-    component       = "data-plane"
-    part-of         = var.installation_name
-    installation    = var.installation_name
+    part-of         = "identity-engine"
+    layer           = "data-plane"
   }
 
   lifecycle_rule {
@@ -185,9 +183,8 @@ resource "google_storage_bucket" "tenant_input_bucket" {
     organisation-id = lower(var.organisation_id)
     tenant-name     = lower(var.name)
     country         = lower(var.country_code)
-    component       = "data-plane"
-    part-of         = var.installation_name
-    installation    = var.installation_name
+    part-of         = "identity-engine"
+    layer           = "data-plane"
   }
   lifecycle_rule {
     condition {
