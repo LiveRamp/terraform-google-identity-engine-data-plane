@@ -43,8 +43,6 @@ resource "google_storage_bucket" "tenant_build_bucket" {
 data "google_iam_policy" "tenant_build_bucket" {
   binding {
     role = "roles/storage.admin"
-    # Do not add people to this group its basically admin for everything and they could delete the bucket
-    # bucket changes should go through atlantis and be reviewed.
     members = [
       "projectOwner:${var.data_plane_project}"
     ]
@@ -123,13 +121,10 @@ resource "google_storage_bucket" "tenant_output_bucket" {
 data "google_iam_policy" "tenant_output_bucket" {
   binding {
     role = "roles/storage.admin"
-    # Do not add people to this group its basically admin for everything and they could delete the bucket
-    # bucket changes should go through atlantis and be reviewed.
     members = [
       "projectOwner:${var.data_plane_project}"
     ]
   }
-  # Write permission to this bucket
   binding {
     role = "roles/storage.objectAdmin"
     members = concat(
@@ -202,13 +197,10 @@ resource "google_storage_bucket" "tenant_input_bucket" {
 data "google_iam_policy" "tenant_input_bucket" {
   binding {
     role = "roles/storage.admin"
-    # Do not add people to this group its basically admin for everything and they could delete the bucket
-    # bucket changes should go through atlantis and be reviewed.
     members = [
       "projectOwner:${var.data_plane_project}"
     ]
   }
-  # Write permission to this bucket
   binding {
     role = "roles/storage.objectAdmin"
     members = concat(
