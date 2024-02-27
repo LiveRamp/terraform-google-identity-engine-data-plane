@@ -105,3 +105,10 @@ variable "enable_kms" {
   description = "Configure KMS to encrypt build, input and output buckets"
   default     = true
 }
+
+
+variable "output_bucket_storage_notification" {
+  type        = set(string)
+  description = "A list of PubSub topic ID's to publish storage notifications"
+  default     = set([])
+}

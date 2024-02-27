@@ -158,6 +158,15 @@ resource "google_storage_bucket_iam_policy" "tenant_output_bucket" {
   policy_data = data.google_iam_policy.tenant_output_bucket.policy_data
 }
 
+# Enable object events to required PubSub topics
+resource "google_storage_notification" "output_bucket_notificaions" {
+  for_each       = var.output_bucket_storage_notification
+  bucket         = google_storage_bucket.tenant_output_bucket.name
+  payload_format = "JSON_API_V1"
+  topic          = each.value
+  event_types    = ["OBJECT_FINALIZE"]
+}
+
 resource "google_storage_bucket" "tenant_input_bucket" {
   provider                    = google-beta
   depends_on                  = [google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings]
