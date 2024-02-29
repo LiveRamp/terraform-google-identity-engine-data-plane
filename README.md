@@ -81,4 +81,8 @@ No requirements.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_tenant_data_access_svc_account"></a> [tenant\_data\_access\_svc\_account](#output\_tenant\_data\_access\_svc\_account) | n/a |
+| <a name="output_build_bucket_name"></a> [build\_bucket\_name](#output\_build\_bucket\_name) | The name of the GCS bucket that will be used to store the build files |
+| <a name="output_input_bucket_name"></a> [input\_bucket\_name](#output\_input\_bucket\_name) | The name of the GCS bucket that will be used to store the input files |
+| <a name="output_output_bucket_name"></a> [output\_bucket\_name](#output\_output\_bucket\_name) | The name of the GCS bucket that will be used to store the output files |
+| <a name="output_tenant_bigquery_dataset_name"></a> [tenant\_bigquery\_dataset\_name](#output\_tenant\_bigquery\_dataset\_name) | The name of the BigQuery dataset that will be used to store the tenant data |
+| <a name="output_tenant_data_access_svc_account_name"></a> [tenant\_data\_access\_svc\_account\_name](#output\_tenant\_data\_access\_svc\_account\_name) | The name of the service account that will be used to access the tenant data |
