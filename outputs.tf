@@ -1,6 +1,6 @@
-output "tenant_data_access_svc_account_name" {
-  value       = google_service_account.tenant_data_access.name
-  description = "The name of the service account that will be used to access the tenant data"
+output "tenant_data_access_svc_account" {
+  value = google_service_account.tenant_data_access
+  description = "The service account object that will be used to access the tenant data"
 }
 
 output "tenant_bigquery_dataset_name" {
