@@ -38,7 +38,7 @@ resource "google_pubsub_topic_iam_policy" "metrics_publisher_subscriber_policy" 
 //Cloudfunction
 data "archive_file" "default" {
   type        = "zip"
-  output_path = "function-source.zip"
+  output_path = "publish_metrics.zip"
   source_dir  = "${path.module}/cloudfunction/publish_metrics/"
 }
 
