@@ -7,7 +7,6 @@ resource "google_pubsub_schema" "metric_schema" {
   name       = "metric-${random_id.uuid.hex}"
   type       = "AVRO"
   definition = file("${path.module}/schema/metric-schema.json")
-
 }
 
 resource "google_pubsub_topic" "metrics_topic" {
