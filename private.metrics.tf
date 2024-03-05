@@ -7,9 +7,9 @@ resource "google_pubsub_topic" "metrics" {
   name    = lower("private.${var.installation_name}.metrics-${random_id.metrics.hex}")
 
   labels = {
-    installation_name = var.installation_name
-    organisation-id   = var.organisation_id
-    tenant-name       = var.name
+    installation_name = lower(var.installation_name)
+    organisation-id   = lower(var.organisation_id)
+    tenant-name       = lower(var.name)
   }
 }
 
@@ -91,8 +91,8 @@ resource "google_cloudfunctions2_function" "default" {
   }
 
   labels = {
-    installation_name = var.installation_name
-    organisation-id   = var.organisation_id
-    tenant-name       = var.name
+    installation_name = lower(var.installation_name)
+    organisation-id   = lower(var.organisation_id)
+    tenant-name       = lower(var.name)
   }
 }
