@@ -6,6 +6,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
+| <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
 | <a name="provider_google"></a> [google](#provider\_google) | n/a |
 | <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | n/a |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
@@ -26,6 +27,7 @@ No requirements.
 | [google-beta_google_storage_bucket.tenant_input_bucket](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_storage_bucket) | resource |
 | [google-beta_google_storage_bucket.tenant_output_bucket](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_storage_bucket) | resource |
 | [google_bigquery_dataset.tenant_dataset](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_dataset) | resource |
+| [google_cloudfunctions2_function.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudfunctions2_function) | resource |
 | [google_compute_address.cloud_nat_static_ip_address](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
 | [google_compute_firewall.allow_idapi_egress](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_firewall.allow_metastore_egress](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
@@ -45,10 +47,14 @@ No requirements.
 | [google_pubsub_topic_iam_policy.metrics_publisher_subscriber_policy](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/pubsub_topic_iam_policy) | resource |
 | [google_service_account.tenant_data_access](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [google_service_account_iam_member.tenant_orchestration_impersonate_tenant_data_access_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account_iam_member) | resource |
+| [google_storage_bucket.cloudfunction_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
 | [google_storage_bucket_iam_policy.tenant_build_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
 | [google_storage_bucket_iam_policy.tenant_input_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
 | [google_storage_bucket_iam_policy.tenant_output_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
+| [google_storage_bucket_object.source](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_object) | resource |
 | [random_id.generator](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [random_id.uuid](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [archive_file.source_code](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [google_iam_policy.metrics_publisher_subscriber](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/iam_policy) | data source |
 | [google_iam_policy.tenant_build_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/iam_policy) | data source |
 | [google_iam_policy.tenant_input_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/iam_policy) | data source |
@@ -60,6 +66,7 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_control_plane_project"></a> [control\_plane\_project](#input\_control\_plane\_project) | The GCP project in which application will run | `string` | n/a | yes |
 | <a name="input_country_code"></a> [country\_code](#input\_country\_code) | The ISO 3166-1 two character country code (https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) | `string` | n/a | yes |
 | <a name="input_data_editors"></a> [data\_editors](#input\_data\_editors) | The users, groups & service accounts that should have read & write access to this customers data | <pre>object({<br>    service_accounts = list(string)<br>    groups           = list(string)<br>    users            = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_data_plane_project"></a> [data\_plane\_project](#input\_data\_plane\_project) | The GCP project in which customer data will be stored. | `string` | n/a | yes |
@@ -75,6 +82,7 @@ No requirements.
 | <a name="input_key_management_location"></a> [key\_management\_location](#input\_key\_management\_location) | The key management location for KMS | `string` | n/a | yes |
 | <a name="input_key_rotation_period_days"></a> [key\_rotation\_period\_days](#input\_key\_rotation\_period\_days) | The frequency at which the crypto key will automatically rotate (days) | `number` | `90` | no |
 | <a name="input_metastore_cidr_ip_address"></a> [metastore\_cidr\_ip\_address](#input\_metastore\_cidr\_ip\_address) | Portrait Engine Metastore CloudSQL instance CIDR IP address | `string` | n/a | yes |
+| <a name="input_metrics_pubsub_topic"></a> [metrics\_pubsub\_topic](#input\_metrics\_pubsub\_topic) | Pub/Sub topic for metrics in the control Plane | `string` | `"private.identity-engine.metrics"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The human readable customer name | `string` | n/a | yes |
 | <a name="input_organisation_id"></a> [organisation\_id](#input\_organisation\_id) | Liveramp CAC/Organisation-id | `string` | n/a | yes |
 | <a name="input_storage_location"></a> [storage\_location](#input\_storage\_location) | The storage location for BigQuery and GCS. | `string` | n/a | yes |
