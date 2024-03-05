@@ -10,7 +10,7 @@ resource "google_pubsub_schema" "metric_schema" {
 
 }
 
-resource "google_pubsub_topic" "metrics" {
+resource "google_pubsub_topic" "metrics_topic" {
   project = var.data_plane_project
   name    = lower("private.${var.installation_name}.metrics-${random_id.uuid.hex}")
 
@@ -44,30 +44,30 @@ data "google_iam_policy" "metrics_publisher_subscriber" {
 }
 
 resource "google_pubsub_topic_iam_policy" "metrics_publisher_subscriber_policy" {
-  project     = google_pubsub_topic.metrics.project
-  topic       = google_pubsub_topic.metrics.name
+  project     = google_pubsub_topic.metrics_topic.project
+  topic       = google_pubsub_topic.metrics_topic.name
   policy_data = data.google_iam_policy.metrics_publisher_subscriber.policy_data
 }
 
-data "archive_file" "source_code" {
+data "archive_file" "cloud_function_source_code" {
   type        = "zip"
   output_path = "publish_metrics.zip"
   source_dir  = "${path.module}/cloudfunction/publish_metrics/"
 }
 
-resource "google_storage_bucket" "cloudfunction_bucket" {
+resource "google_storage_bucket" "cloud_function_bucket" {
   name                        = "${random_id.uuid.hex}-gcf-v2-source"
   location                    = var.storage_location
   uniform_bucket_level_access = true
 }
 
-resource "google_storage_bucket_object" "source" {
+resource "google_storage_bucket_object" "cloud_function_bucket" {
   name   = "publish_metrics.zip"
-  bucket = google_storage_bucket.cloudfunction_bucket.name
-  source = data.archive_file.source_code.output_path
+  bucket = google_storage_bucket.cloud_function_bucket.name
+  source = data.archive_file.cloud_function_source_code.output_path
 }
 
-resource "google_cloudfunctions2_function" "default" {
+resource "google_cloudfunctions2_function" "metric_publish_cloud_function" {
   name        = "${random_id.uuid.hex}-publish-metrics"
   location    = var.gcp_region
   description = "Publish Metrics to Control Plane"
@@ -77,8 +77,8 @@ resource "google_cloudfunctions2_function" "default" {
     entry_point = "publish_metrics"
     source {
       storage_source {
-        bucket = google_storage_bucket.cloudfunction_bucket.name
-        object = google_storage_bucket_object.source.name
+        bucket = google_storage_bucket.cloud_function_bucket.name
+        object = google_storage_bucket_object.cloud_function_bucket.name
       }
     }
   }
@@ -99,7 +99,7 @@ resource "google_cloudfunctions2_function" "default" {
   event_trigger {
     trigger_region = var.gcp_region
     event_type     = "google.cloud.pubsub.topic.v1.messagePublished"
-    pubsub_topic   = google_pubsub_topic.metrics.id
+    pubsub_topic   = google_pubsub_topic.metrics_topic.id
     retry_policy   = "RETRY_POLICY_RETRY"
   }
 
