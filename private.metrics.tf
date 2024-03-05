@@ -35,7 +35,6 @@ resource "google_pubsub_topic_iam_policy" "metrics_publisher_subscriber_policy" 
   policy_data = data.google_iam_policy.metrics_publisher_subscriber.policy_data
 }
 
-//Cloudfunction
 data "archive_file" "default" {
   type        = "zip"
   output_path = "publish_metrics.zip"
