@@ -2,6 +2,13 @@ resource "random_id" "uuid" {
   byte_length = 6
 }
 
+resource "google_pubsub_schema" "metric_schema" {
+  project = var.data_plane_project
+  name       = "metric"
+  type       = "AVRO"
+  definition = file("./schema/metric-schema.json")
+}
+
 resource "google_pubsub_topic" "metrics" {
   project = var.data_plane_project
   name    = lower("private.${var.installation_name}.metrics-${random_id.uuid.hex}")
@@ -10,6 +17,12 @@ resource "google_pubsub_topic" "metrics" {
     installation_name = lower(var.installation_name)
     organisation-id   = lower(var.organisation_id)
     tenant-name       = lower(var.name)
+  }
+
+  depends_on = [google_pubsub_schema.metric_schema]
+  schema_settings {
+    schema = "projects/${var.data_plane_project}/schemas/${google_pubsub_schema.metric_schema.name}"
+    encoding = "JSON"
   }
 }
 
