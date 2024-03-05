@@ -1,9 +1,15 @@
+resource "random_id" "metrics" {
+  byte_length = 8
+}
+
 resource "google_pubsub_topic" "metrics" {
   project = var.data_plane_project
-  name    = lower("private.${var.installation_name}.metrics")
+  name    = lower("private.${var.installation_name}.metrics-${random_id.metrics.hex}")
 
   labels = {
     installation_name = var.installation_name
+    organisation-id   = var.organisation_id
+    tenant-name       = var.name
   }
 }
 
@@ -31,7 +37,7 @@ resource "google_pubsub_topic_iam_policy" "metrics_publisher_subscriber_policy" 
 
 //Cloudfunction
 resource "google_storage_bucket" "cloudfunction_bucket" {
-  name                        = "${var.data_plane_project}-gcf-v2-source"
+  name                        = "${random_id.metrics.hex}-gcf-v2-source"
   location                    = var.storage_location
   uniform_bucket_level_access = true
 }
@@ -43,7 +49,7 @@ resource "google_storage_bucket_object" "source" {
 }
 
 resource "google_cloudfunctions2_function" "default" {
-  name        = "publish-metrics"
+  name        = "${random_id.metrics.hex}-publish-metrics"
   location    = var.gcp_region
   description = "Publish Metrics to Control Plane"
 
@@ -67,9 +73,8 @@ resource "google_cloudfunctions2_function" "default" {
       TARGET_GOOGLE_CLOUD_PROJECT = var.control_plane_project
       TARGET_TOPIC_NAME           = var.metrics_pubsub_topic
     }
-    ingress_settings               = "ALLOW_INTERNAL_ONLY"
-    all_traffic_on_latest_revision = true
-    service_account_email          = google_service_account.tenant_data_access.email
+    ingress_settings      = "ALLOW_INTERNAL_ONLY"
+    service_account_email = google_service_account.tenant_data_access.email
   }
 
   event_trigger {
@@ -77,5 +82,11 @@ resource "google_cloudfunctions2_function" "default" {
     event_type     = "google.cloud.pubsub.topic.v1.messagePublished"
     pubsub_topic   = google_pubsub_topic.metrics.id
     retry_policy   = "RETRY_POLICY_RETRY"
+  }
+
+  labels = {
+    installation_name = var.installation_name
+    organisation-id   = var.organisation_id
+    tenant-name       = var.name
   }
 }
