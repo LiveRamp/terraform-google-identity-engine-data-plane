@@ -6,7 +6,8 @@ resource "google_pubsub_schema" "metric_schema" {
   project = var.data_plane_project
   name       = "metric"
   type       = "AVRO"
-  definition = file("/schema/metric-schema.json")
+  definition = file("${path.module}/schema/metric-schema.json")
+
 }
 
 resource "google_pubsub_topic" "metrics" {
