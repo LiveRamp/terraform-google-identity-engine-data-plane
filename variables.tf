@@ -23,6 +23,11 @@ variable "environment" {
   description = "The environment this infrastructure is supported (eg.: dev, staging or prod)"
 }
 
+variable "control_plane_project" {
+  type        = string
+  description = "The GCP project in which application will run"
+}
+
 variable "data_plane_project" {
   type        = string
   description = "The GCP project in which customer data will be stored."
@@ -104,4 +109,10 @@ variable "enable_kms" {
   type        = bool
   description = "Configure KMS to encrypt build, input and output buckets"
   default     = true
+}
+
+variable "metrics_pubsub_topic" {
+  type        = string
+  description = "Pub/Sub topic for metrics in the control Plane"
+  default     = "private.identity-engine.metrics"
 }
