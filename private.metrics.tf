@@ -1,10 +1,10 @@
-resource "random_id" "metrics" {
-  byte_length = 8
+resource "random_id" "uuid" {
+  byte_length = 6
 }
 
 resource "google_pubsub_topic" "metrics" {
   project = var.data_plane_project
-  name    = lower("private.${var.installation_name}.metrics-${random_id.metrics.hex}")
+  name    = lower("private.${var.installation_name}.metrics-${random_id.uuid.hex}")
 
   labels = {
     installation_name = lower(var.installation_name)
@@ -35,14 +35,14 @@ resource "google_pubsub_topic_iam_policy" "metrics_publisher_subscriber_policy" 
   policy_data = data.google_iam_policy.metrics_publisher_subscriber.policy_data
 }
 
-data "archive_file" "default" {
+data "archive_file" "source_code" {
   type        = "zip"
   output_path = "publish_metrics.zip"
   source_dir  = "${path.module}/cloudfunction/publish_metrics/"
 }
 
 resource "google_storage_bucket" "cloudfunction_bucket" {
-  name                        = "${random_id.metrics.hex}-gcf-v2-source"
+  name                        = "${random_id.uuid.hex}-gcf-v2-source"
   location                    = var.storage_location
   uniform_bucket_level_access = true
 }
@@ -50,11 +50,11 @@ resource "google_storage_bucket" "cloudfunction_bucket" {
 resource "google_storage_bucket_object" "source" {
   name   = "publish_metrics.zip"
   bucket = google_storage_bucket.cloudfunction_bucket.name
-  source = data.archive_file.default.output_path
+  source = data.archive_file.source_code.output_path
 }
 
 resource "google_cloudfunctions2_function" "default" {
-  name        = "${random_id.metrics.hex}-publish-metrics"
+  name        = "${random_id.uuid.hex}-publish-metrics"
   location    = var.gcp_region
   description = "Publish Metrics to Control Plane"
 
