@@ -3,8 +3,8 @@ resource "random_id" "uuid" {
 }
 
 resource "google_pubsub_schema" "metric_schema" {
-  project = var.data_plane_project
-  name       = "metric"
+  project    = var.data_plane_project
+  name       = "metric-${random_id.uuid.hex}"
   type       = "AVRO"
   definition = file("${path.module}/schema/metric-schema.json")
 
@@ -22,7 +22,7 @@ resource "google_pubsub_topic" "metrics_topic" {
 
   depends_on = [google_pubsub_schema.metric_schema]
   schema_settings {
-    schema = "projects/${var.data_plane_project}/schemas/${google_pubsub_schema.metric_schema.name}"
+    schema   = "projects/${var.data_plane_project}/schemas/${google_pubsub_schema.metric_schema.name}"
     encoding = "JSON"
   }
 }

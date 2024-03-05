@@ -1,5 +1,5 @@
 output "tenant_data_access_svc_account" {
-  value = google_service_account.tenant_data_access
+  value       = google_service_account.tenant_data_access
   description = "The service account object that will be used to access the tenant data"
 }
 
