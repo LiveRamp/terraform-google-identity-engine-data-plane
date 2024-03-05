@@ -36,6 +36,12 @@ resource "google_pubsub_topic_iam_policy" "metrics_publisher_subscriber_policy" 
 }
 
 //Cloudfunction
+data "archive_file" "default" {
+  type        = "zip"
+  output_path = "function-source.zip"
+  source_dir  = "../cloudfunction/publish_metrics/"
+}
+
 resource "google_storage_bucket" "cloudfunction_bucket" {
   name                        = "${random_id.metrics.hex}-gcf-v2-source"
   location                    = var.storage_location

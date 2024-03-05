@@ -114,5 +114,5 @@ variable "enable_kms" {
 variable "metrics_pubsub_topic" {
   type        = string
   description = "Pub/Sub topic for metrics in the control Plane"
-  default = "metrics"
+  default = "private.identity-engine.metrics"
 }
