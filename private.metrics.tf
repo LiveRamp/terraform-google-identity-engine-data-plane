@@ -1,11 +1,6 @@
-resource "random_id" "uuid" {
-  byte_length = 6
-  count       = var.enable_metrics_infra ? 1 : 0
-}
-
 resource "google_pubsub_schema" "metric_schema" {
   project    = var.data_plane_project
-  name       = "metric-${random_id.uuid[0].hex}"
+  name       = lower("metric-${var.organisation_id}")
   type       = "AVRO"
   definition = file("${path.module}/schema/metric-schema.json")
   count      = var.enable_metrics_infra ? 1 : 0
@@ -13,7 +8,7 @@ resource "google_pubsub_schema" "metric_schema" {
 
 resource "google_pubsub_topic" "metrics_topic" {
   project = var.data_plane_project
-  name    = lower("private.${var.installation_name}.metrics-${random_id.uuid[0].hex}")
+  name    = lower("private.${var.organisation_id}.metrics-v1")
 
   labels = {
     installation_name = lower(var.installation_name)
@@ -62,7 +57,7 @@ data "archive_file" "cloud_function_source_code" {
 }
 
 resource "google_storage_bucket" "cloud_function_bucket" {
-  name                        = "${random_id.uuid[0].hex}-gcf-v2-source"
+  name                        = lower("${var.organisation_id}-gcf-v2-source")
   location                    = var.storage_location
   uniform_bucket_level_access = true
   count                       = var.enable_metrics_infra ? 1 : 0
@@ -76,7 +71,7 @@ resource "google_storage_bucket_object" "cloud_function_source" {
 }
 
 resource "google_cloudfunctions2_function" "metric_publish_cloud_function" {
-  name        = "${random_id.uuid[0].hex}-publish-metrics"
+  name        = lower("${var.organisation_id}-publish-metrics")
   location    = var.gcp_region
   description = "Publish Metrics to Control Plane"
 
