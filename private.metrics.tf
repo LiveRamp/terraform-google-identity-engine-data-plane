@@ -71,7 +71,7 @@ resource "google_storage_bucket_object" "cloud_function_source" {
 }
 
 resource "google_cloudfunctions2_function" "metric_publish_cloud_function" {
-  name        = lower("${var.organisation_id}-publish-metrics")
+  name        = lower("publish-metrics-fn-${var.organisation_id}")
   location    = var.gcp_region
   description = "Publish Metrics to Control Plane"
 
