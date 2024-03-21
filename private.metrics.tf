@@ -8,7 +8,7 @@ resource "google_pubsub_schema" "metric_schema" {
 
 resource "google_pubsub_topic" "metrics_topic" {
   project = var.data_plane_project
-  name    = lower("private.${var.organisation_id}.metrics-v1")
+  name    = lower("private.${var.organisation_id}.metrics.v1")
 
   labels = {
     installation_name = lower(var.installation_name)
