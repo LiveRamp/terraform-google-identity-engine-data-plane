@@ -57,7 +57,7 @@ data "archive_file" "cloud_function_source_code" {
 }
 
 resource "google_storage_bucket" "cloud_function_bucket" {
-  name                        = lower("${var.organisation_id}-gcf-v2-source")
+  name                        = lower("${var.organisation_id}-${var.env_region}-gcf-v2-source")
   location                    = var.storage_location
   uniform_bucket_level_access = true
   count                       = var.enable_metrics_infra ? 1 : 0
