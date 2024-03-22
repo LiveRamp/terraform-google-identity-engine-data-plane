@@ -13,7 +13,8 @@ resource "google_project_service" "enable_api" {
     "dataproc.googleapis.com",
     "pubsub.googleapis.com",
     "eventarc.googleapis.com",
-    "cloudfunctions.googleapis.com"
+    "cloudfunctions.googleapis.com",
+    "run.googleapis.com"
   ])
   project = var.data_plane_project
   service = each.value
