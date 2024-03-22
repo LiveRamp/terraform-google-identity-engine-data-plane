@@ -77,7 +77,6 @@ No requirements.
 | <a name="input_enable_dataproc_network"></a> [enable\_dataproc\_network](#input\_enable\_dataproc\_network) | Configure network bits for Dataproc - VPC, firewall rules etc | `bool` | `true` | no |
 | <a name="input_enable_kms"></a> [enable\_kms](#input\_enable\_kms) | Configure KMS to encrypt build, input and output buckets | `bool` | `true` | no |
 | <a name="input_enable_metrics_infra"></a> [enable\_metrics\_infra](#input\_enable\_metrics\_infra) | n/a | `bool` | `false` | no |
-| <a name="input_env_region"></a> [env\_region](#input\_env\_region) | The environment region this infrastructure is supported (eg.: global, eu, us) | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment this infrastructure is supported (eg.: dev, staging or prod) | `string` | n/a | yes |
 | <a name="input_gcp_region"></a> [gcp\_region](#input\_gcp\_region) | The GCP region to be used | `string` | n/a | yes |
 | <a name="input_idapi_cidr_ip_addresses"></a> [idapi\_cidr\_ip\_addresses](#input\_idapi\_cidr\_ip\_addresses) | Portrait Engine ID-API instance CIDR IP addresses | `list(string)` | `[]` | no |
