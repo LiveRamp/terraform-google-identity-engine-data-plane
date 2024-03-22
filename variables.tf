@@ -23,11 +23,6 @@ variable "environment" {
   description = "The environment this infrastructure is supported (eg.: dev, staging or prod)"
 }
 
-variable "env_region" {
-  type        = string
-  description = "The environment region this infrastructure is supported (eg.: global, eu, us)"
-}
-
 variable "control_plane_project" {
   type        = string
   description = "The GCP project in which application will run"
