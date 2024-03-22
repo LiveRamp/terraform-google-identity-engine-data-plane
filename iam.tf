@@ -48,16 +48,3 @@ resource "google_service_account_iam_member" "tenant_orchestration_impersonate_t
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${var.tenant_orchestration_sa}"
 }
-
-##########################################
-## Grant default cloud build account Storage Object Viewer role
-##########################################
-data "google_project" "data_plane_project" {
-  project_id = var.data_plane_project
-}
-
-resource "google_project_iam_member" "storage_object_viewer_binding" {
-  project = data.google_project.data_plane_project.project_id
-  role    = "roles/storage.objectViewer"
-  member  = "serviceAccount:${data.google_project.data_plane_project.number}@cloudbuild.gserviceaccount.com"
-}
