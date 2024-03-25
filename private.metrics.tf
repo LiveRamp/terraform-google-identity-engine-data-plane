@@ -110,13 +110,3 @@ resource "google_cloudfunctions_function" "metric_publish_cloud_function" {
 
   count = var.enable_metrics_infra ? 1 : 0
 }
-
-##########################################
-## Grant default cloud build account Storage Object Viewer role
-##########################################
-
-resource "google_project_iam_member" "storage_object_viewer_binding" {
-  project = data.google_project.data_plane_project.project_id
-  role    = "roles/storage.objectViewer"
-  member  = "serviceAccount:${data.google_project.data_plane_project.number}@cloudbuild.gserviceaccount.com"
-}
