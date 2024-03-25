@@ -70,40 +70,36 @@ resource "google_storage_bucket_object" "cloud_function_source" {
   count  = var.enable_metrics_infra ? 1 : 0
 }
 
-resource "google_cloudfunctions2_function" "metric_publish_cloud_function" {
-  name        = lower("publish-metrics-fn-${var.organisation_id}")
-  location    = var.gcp_region
-  description = "Publish Metrics to Control Plane"
-
-  build_config {
-    runtime     = "python39"
-    entry_point = "publish_metrics"
-    source {
-      storage_source {
-        bucket = google_storage_bucket.cloud_function_bucket[0].name
-        object = google_storage_bucket_object.cloud_function_source[0].name
-      }
-    }
-  }
-
-  service_config {
-    max_instance_count = 3
-    min_instance_count = 1
-    available_memory   = "256M"
-    timeout_seconds    = 60
-    environment_variables = {
-      TARGET_GOOGLE_CLOUD_PROJECT = var.control_plane_project
-      TARGET_TOPIC_NAME           = var.control_plane_metrics_pubsub_topic
-    }
-    ingress_settings      = "ALLOW_INTERNAL_ONLY"
-    service_account_email = google_service_account.tenant_data_access.email
-  }
+resource "google_cloudfunctions_function" "metric_publish_cloud_function" {
+  project               = var.data_plane_project
+  name                  = lower("publish-metrics-fn-${var.organisation_id}")
+  source_archive_bucket = google_storage_bucket.cloud_function_bucket[0].name
+  source_archive_object = google_storage_bucket_object.cloud_function_source[0].name
+  description           = "Publish Metrics to Control Plane"
+  entry_point           = "publish_metrics"
+  region                = var.gcp_region
+  available_memory_mb   = 256
+  timeout               = 60
+  max_instances         = 3
+  min_instances         = 1
+  runtime               = "python39"
 
   event_trigger {
-    trigger_region = var.gcp_region
-    event_type     = "google.cloud.pubsub.topic.v1.messagePublished"
-    pubsub_topic   = google_pubsub_topic.metrics_topic[0].id
-    retry_policy   = "RETRY_POLICY_RETRY"
+    event_type = "google.pubsub.topic.publish"
+    resource   = google_pubsub_topic.metrics_topic[0].id
+
+    failure_policy {
+      retry = true
+    }
+
+  }
+
+  service_account_email = google_service_account.tenant_data_access.email
+  ingress_settings      = "ALLOW_INTERNAL_ONLY"
+
+  environment_variables = {
+    TARGET_GOOGLE_CLOUD_PROJECT = var.control_plane_project
+    TARGET_TOPIC_NAME           = var.control_plane_metrics_pubsub_topic
   }
 
   labels = {
