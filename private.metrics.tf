@@ -70,7 +70,7 @@ resource "google_storage_bucket_object" "cloud_function_source" {
   count  = var.enable_metrics_infra ? 1 : 0
 }
 
-resource "google_cloudfunctions_function" "metric_publish_cloud_function_2" {
+resource "google_cloudfunctions_function" "metric_publish_cloud_function" {
   project               = var.data_plane_project
   name                  = lower("publish-metrics-fn-${var.organisation_id}")
   source_archive_bucket = google_storage_bucket.cloud_function_bucket[0].name
