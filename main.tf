@@ -11,9 +11,7 @@ resource "google_project_service" "enable_api" {
     "accesscontextmanager.googleapis.com",
     "cloudkms.googleapis.com",
     "dataproc.googleapis.com",
-    "pubsub.googleapis.com",
-    "eventarc.googleapis.com",
-    "cloudfunctions.googleapis.com"
+    "pubsub.googleapis.com"
   ])
   project = var.data_plane_project
   service = each.value
