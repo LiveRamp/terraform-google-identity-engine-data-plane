@@ -118,3 +118,8 @@ variable "enable_query_engine_egress" {
   default     = true
 }
 
+variable "data_plane_network" {
+  type        = string
+  description = "Name of VPC network - use only if enable_dataproc_network = false"
+  default     = ""
+}
