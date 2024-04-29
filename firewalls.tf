@@ -40,6 +40,26 @@ resource "google_compute_firewall" "allow_idapi_egress" {
   destination_ranges = var.idapi_cidr_ip_addresses
 }
 
+resource "google_compute_firewall" "allow_query_engine_egress" {
+  count       = var.enable_dataproc_network ? 1 : 0
+  project     = google_compute_network.vpc_network[*].project
+  name        = "allow-${var.installation_name}-qe-egress"
+  network     = google_compute_network.vpc_network[*].name
+  direction   = "EGRESS"
+  priority    = "1000"
+  description = "Allow EGRESS to LiveRamp api.liveramp.com"
+
+  allow {
+    protocol = "tcp"
+
+    ports = [
+      "443"
+    ]
+  }
+
+  destination_ranges = var.query_engine_ip_address
+}
+
 module "dataproc-firewall-rules" {
   count        = var.enable_dataproc_network ? 1 : 0
   source       = "terraform-google-modules/network/google//modules/firewall-rules"

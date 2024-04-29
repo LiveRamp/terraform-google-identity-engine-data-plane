@@ -94,6 +94,12 @@ variable "idapi_cidr_ip_addresses" {
   description = "Portrait Engine ID-API instance CIDR IP addresses"
 }
 
+variable "query_engine_ip_address" {
+  type        = string
+  default     = "34.149.99.209"
+  description = "Portrait Engine ID-API instance CIDR IP addresses"
+}
+
 variable "enable_dataproc_network" {
   type        = bool
   description = "Configure network bits for Dataproc - VPC, firewall rules etc"
