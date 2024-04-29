@@ -2,7 +2,7 @@ resource "google_compute_firewall" "allow_metastore_egress" {
   count       = var.enable_dataproc_network ? 1 : 0
   project     = google_compute_network.vpc_network[0].project
   name        = "allow-${var.installation_name}-metastore-egress"
-  network     = google_compute_network.vpc_network[*].name
+  network     = google_compute_network.vpc_network[0].name
   direction   = "EGRESS"
   priority    = "1000"
   description = "Allow EGRESS to Identity Engine Metastore CloudSQL instance"
@@ -24,7 +24,7 @@ resource "google_compute_firewall" "allow_idapi_egress" {
   count       = var.enable_dataproc_network ? 1 : 0
   project     = google_compute_network.vpc_network[0].project
   name        = "allow-${var.installation_name}-idapi-egress"
-  network     = google_compute_network.vpc_network[*].name
+  network     = google_compute_network.vpc_network[0].name
   direction   = "EGRESS"
   priority    = "1000"
   description = "Allow EGRESS to LiveRamp ID-API instance"
@@ -44,7 +44,7 @@ resource "google_compute_firewall" "allow_query_engine_egress" {
   count       = var.enable_dataproc_network ? 1 : 0
   project     = google_compute_network.vpc_network[0].project
   name        = "allow-${var.installation_name}-qe-egress"
-  network     = google_compute_network.vpc_network[*].name
+  network     = google_compute_network.vpc_network[0].name
   direction   = "EGRESS"
   priority    = "1000"
   description = "Allow EGRESS to LiveRamp api.liveramp.com"
