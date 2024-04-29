@@ -112,3 +112,9 @@ variable "enable_kms" {
   default     = true
 }
 
+variable "enable_query_engine_egress" {
+  type        = bool
+  description = "Configure network bits for Query Engine - VPC, firewall rules etc"
+  default     = true
+}
+
