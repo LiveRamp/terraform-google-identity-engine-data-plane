@@ -1,7 +1,3 @@
-locals {
-  vpc_network_exists = length(google_compute_network.vpc_network) > 0
-}
-
 resource "google_compute_firewall" "allow_metastore_egress" {
   count       = var.enable_dataproc_network ? 1 : 0
   project     = google_compute_network.vpc_network[0].project
@@ -46,10 +42,10 @@ resource "google_compute_firewall" "allow_idapi_egress" {
 
 resource "google_compute_firewall" "allow_query_engine_egress" {
   depends_on  = [google_compute_network.vpc_network]
-  count       = var.enable_query_engine_egress ? 1 : 0
-  project     = local.vpc_network_exists ? google_compute_network.vpc_network[0].project : var.data_plane_project
+  count       = var.enable_dataproc_network ? 1 : 0
+  project     = google_compute_network.vpc_network[0].project
   name        = "allow-${var.name}-qe-egress"
-  network     = local.vpc_network_exists ? google_compute_network.vpc_network[0].name : var.data_plane_network
+  network     = google_compute_network.vpc_network[0].name
   direction   = "EGRESS"
   priority    = "1000"
   description = "Allow EGRESS to LiveRamp api.liveramp.com"

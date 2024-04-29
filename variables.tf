@@ -111,15 +111,3 @@ variable "enable_kms" {
   description = "Configure KMS to encrypt build, input and output buckets"
   default     = true
 }
-
-variable "enable_query_engine_egress" {
-  type        = bool
-  description = "Configure network bits for Query Engine - VPC, firewall rules etc"
-  default     = true
-}
-
-variable "data_plane_network" {
-  type        = string
-  description = "Name of VPC network - use only if enable_dataproc_network = false"
-  default     = ""
-}
