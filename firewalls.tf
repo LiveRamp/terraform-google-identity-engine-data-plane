@@ -57,7 +57,9 @@ resource "google_compute_firewall" "allow_query_engine_egress" {
     ]
   }
 
-  destination_ranges = var.query_engine_ip_address
+  destination_ranges = [
+    var.query_engine_ip_address
+  ]
 }
 
 module "dataproc-firewall-rules" {
