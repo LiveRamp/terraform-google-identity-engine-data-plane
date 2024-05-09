@@ -106,9 +106,3 @@ variable "enable_kms" {
   default     = true
 }
 
-variable "enable_liveramp_query_engine" {
-  type        = bool
-  description = "Create HMAC keys for LiveRamp's Query Engine to be used in data plane"
-  default     = false
-}
-
