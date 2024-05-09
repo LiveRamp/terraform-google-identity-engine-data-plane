@@ -10,5 +10,5 @@ resource "google_service_account" "tenant_data_access" {
 
 resource "google_storage_hmac_key" "tenant_query_engine_access" {
   count                 = var.enable_liveramp_query_engine ? 1 : 0
-  service_account_email = tenant_data_access.service_account.email
+  service_account_email = google_service_account.tenant_data_access.email
 }
