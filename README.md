@@ -46,7 +46,6 @@ No requirements.
 | [google_storage_bucket_iam_policy.tenant_build_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
 | [google_storage_bucket_iam_policy.tenant_input_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
 | [google_storage_bucket_iam_policy.tenant_output_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
-| [google_storage_hmac_key.tenant_query_engine_access](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_hmac_key) | resource |
 | [random_id.generator](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [google_iam_policy.tenant_build_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/iam_policy) | data source |
 | [google_iam_policy.tenant_input_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/iam_policy) | data source |
@@ -66,7 +65,6 @@ No requirements.
 | <a name="input_dataproc_subnet_ip4_cidr"></a> [dataproc\_subnet\_ip4\_cidr](#input\_dataproc\_subnet\_ip4\_cidr) | Subnet used for Dataproc clusters | `string` | n/a | yes |
 | <a name="input_enable_dataproc_network"></a> [enable\_dataproc\_network](#input\_enable\_dataproc\_network) | Configure network bits for Dataproc - VPC, firewall rules etc | `bool` | `true` | no |
 | <a name="input_enable_kms"></a> [enable\_kms](#input\_enable\_kms) | Configure KMS to encrypt build, input and output buckets | `bool` | `true` | no |
-| <a name="input_enable_liveramp_query_engine"></a> [enable\_liveramp\_query\_engine](#input\_enable\_liveramp\_query\_engine) | Create HMAC keys for LiveRamp's Query Engine to be used in data plane | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment this infrastructure is supported (eg.: dev, staging or prod) | `string` | n/a | yes |
 | <a name="input_gcp_region"></a> [gcp\_region](#input\_gcp\_region) | The GCP region to be used | `string` | n/a | yes |
 | <a name="input_idapi_cidr_ip_addresses"></a> [idapi\_cidr\_ip\_addresses](#input\_idapi\_cidr\_ip\_addresses) | Portrait Engine ID-API instance CIDR IP addresses | `list(string)` | `[]` | no |
