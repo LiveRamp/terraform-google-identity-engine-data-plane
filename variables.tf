@@ -105,9 +105,3 @@ variable "enable_kms" {
   description = "Configure KMS to encrypt build, input and output buckets"
   default     = true
 }
-
-variable "enable_liveramp_query_engine" {
-  type        = bool
-  description = "Create HMAC keys for LiveRamp's Query Engine to be used in data plane, should be enabled only to access LiveRamp data"
-  default     = false
-}
