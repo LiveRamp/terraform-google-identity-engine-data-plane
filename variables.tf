@@ -109,24 +109,29 @@ variable "enable_kms" {
 variable "bigquery_dataset_name" {
   type        = string
   description = "BigQuery Dataset name"
+  default     = ""
 }
 
 variable "input_bucket_name" {
   type        = string
   description = "GCS Input bucket name"
+  default     = ""
 }
 
 variable "build_bucket_name" {
   type        = string
   description = "GCS Build bucket name"
+  default     = ""
 }
 
 variable "output_bucket_name" {
   type        = string
   description = "GCS Output bucket name"
+  default     = ""
 }
 
 variable "tenant_service_account_name" {
   type        = string
   description = "Service Account name"
+  default     = ""
 }
