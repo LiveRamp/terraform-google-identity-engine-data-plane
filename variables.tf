@@ -105,3 +105,28 @@ variable "enable_kms" {
   description = "Configure KMS to encrypt build, input and output buckets"
   default     = true
 }
+
+variable "bigquery_dataset_name" {
+  type        = string
+  description = "BigQuery Dataset name"
+}
+
+variable "input_bucket_name" {
+  type        = string
+  description = "GCS Input bucket name"
+}
+
+variable "build_bucket_name" {
+  type        = string
+  description = "GCS Build bucket name"
+}
+
+variable "output_bucket_name" {
+  type        = string
+  description = "GCS Output bucket name"
+}
+
+variable "service_account_name" {
+  type        = string
+  description = "Service Account name"
+}
