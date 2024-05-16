@@ -126,7 +126,7 @@ variable "output_bucket_name" {
   description = "GCS Output bucket name"
 }
 
-variable "service_account_name" {
+variable "tenant_service_account_name" {
   type        = string
   description = "Service Account name"
 }
