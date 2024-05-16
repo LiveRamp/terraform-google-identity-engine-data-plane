@@ -1,6 +1,11 @@
+locals {
+  default_bigquery_dataset_name = replace(lower("${var.installation_name}_${var.name}_${var.country_code}"), "-", "_")
+  bigquery_dataset_name         = coalesce(var.bigquery_dataset_name, local.default_bigquery_dataset_name)
+}
+
 resource "google_bigquery_dataset" "tenant_dataset" {
   project       = var.data_plane_project
-  dataset_id    = replace(lower("${var.installation_name}_${var.name}_${var.country_code}"), "-", "_")
+  dataset_id    = local.bigquery_dataset_name
   friendly_name = "${title(var.name)} ${upper(var.country_code)} dataset"
   description   = "This dataset is for ${title(var.name)} ${upper(var.country_code)}"
   location      = var.storage_location

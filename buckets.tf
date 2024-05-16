@@ -1,14 +1,17 @@
 locals {
-  input_bucket  = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-input")
-  build_bucket  = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-build")
-  output_bucket = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-output")
+  default_input_bucket_name  = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-input")
+  default_build_bucket_name  = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-build")
+  default_output_bucket_name = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-output")
+  input_bucket_name          = coalesce(var.input_bucket_name, local.default_input_bucket_name)
+  build_bucket_name          = coalesce(var.build_bucket_name, local.default_build_bucket_name)
+  output_bucket_name         = coalesce(var.output_bucket_name, local.default_output_bucket_name)
 }
 
 resource "google_storage_bucket" "tenant_build_bucket" {
   provider                    = google-beta
   depends_on                  = [google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings]
   project                     = var.data_plane_project
-  name                        = local.build_bucket
+  name                        = local.build_bucket_name
   location                    = var.storage_location
   uniform_bucket_level_access = true
 
@@ -85,7 +88,7 @@ resource "google_storage_bucket" "tenant_output_bucket" {
   provider                    = google-beta
   depends_on                  = [google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings]
   project                     = var.data_plane_project
-  name                        = local.output_bucket
+  name                        = local.output_bucket_name
   location                    = var.storage_location
   uniform_bucket_level_access = true
 
@@ -162,7 +165,7 @@ resource "google_storage_bucket" "tenant_input_bucket" {
   provider                    = google-beta
   depends_on                  = [google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings]
   project                     = var.data_plane_project
-  name                        = local.input_bucket
+  name                        = local.input_bucket_name
   location                    = var.storage_location
   uniform_bucket_level_access = true
 
