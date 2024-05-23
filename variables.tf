@@ -94,10 +94,10 @@ variable "idapi_cidr_ip_addresses" {
   description = "Portrait Engine ID-API instance CIDR IP addresses"
 }
 
-variable "enable_dataproc_network" {
+variable "vpc_network_name" {
   type        = bool
-  description = "Configure network bits for Dataproc - VPC, firewall rules etc"
-  default     = true
+  description = "The network to connect the data-plane to, if not specified, module will provision a dedicated one"
+  default     = null
 }
 
 variable "enable_kms" {

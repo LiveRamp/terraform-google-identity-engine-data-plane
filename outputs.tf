@@ -22,3 +22,8 @@ output "output_bucket_name" {
   value       = google_storage_bucket.tenant_output_bucket.name
   description = "The name of the GCS bucket that will be used to store the output files"
 }
+
+output "vpc_network_name" {
+  value       = google_compute_network.vpc_network.name
+  description = "The name of the VPC network"
+}

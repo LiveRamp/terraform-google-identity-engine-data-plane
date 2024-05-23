@@ -1,8 +1,7 @@
 resource "google_compute_firewall" "allow_metastore_egress" {
-  count       = var.enable_dataproc_network ? 1 : 0
-  project     = google_compute_network.vpc_network[0].project
+  project     = var.project_id
   name        = "allow-${var.installation_name}-metastore-egress"
-  network     = google_compute_network.vpc_network[0].name
+  network     = var.network_name
   direction   = "EGRESS"
   priority    = "1000"
   description = "Allow EGRESS to Identity Engine Metastore CloudSQL instance"
@@ -14,17 +13,14 @@ resource "google_compute_firewall" "allow_metastore_egress" {
       "3306"
     ]
   }
-
-  destination_ranges = [
-    var.metastore_cidr_ip_address
-  ]
+  destination_ranges = [var.metastore_cidr_ip_address]
 }
 
+
 resource "google_compute_firewall" "allow_idapi_egress" {
-  count       = var.enable_dataproc_network ? 1 : 0
-  project     = google_compute_network.vpc_network[0].project
+  project     = var.project_id
   name        = "allow-${var.installation_name}-idapi-egress"
-  network     = google_compute_network.vpc_network[0].name
+  network     = var.network_name
   direction   = "EGRESS"
   priority    = "1000"
   description = "Allow EGRESS to LiveRamp ID-API instance"
@@ -36,16 +32,15 @@ resource "google_compute_firewall" "allow_idapi_egress" {
       "443"
     ]
   }
-
   destination_ranges = var.idapi_cidr_ip_addresses
 }
 
+
 module "dataproc-firewall-rules" {
-  count        = var.enable_dataproc_network ? 1 : 0
   source       = "terraform-google-modules/network/google//modules/firewall-rules"
   version      = "6.0.1"
-  project_id   = var.data_plane_project
-  network_name = google_compute_network.vpc_network[0].name
+  project_id   = var.project_id
+  network_name = var.network_name
 
   rules = [
     {
