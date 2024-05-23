@@ -11,7 +11,7 @@ module "cloud_router" {
   version = "~> 6.0"
   name    = lower("${var.installation_name}-${var.gcp_region}-router")
   project = var.data_plane_project
-  network = google_compute_network.vpc_network[*].name
+  network = google_compute_network.vpc_network[0].name
   region  = var.gcp_region
 
   nats = [{
