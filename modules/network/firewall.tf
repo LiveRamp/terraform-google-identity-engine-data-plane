@@ -48,7 +48,7 @@ module "dataproc-firewall-rules" {
       description             = "Allow Dataproc clusters to communicate over private IP to google APIs and other nodes"
       direction               = "INGRESS"
       priority                = 1000
-      ranges                  = [var.dataproc_subnet_ip4_cidr]
+      ranges                  = [var.subnet_ip4_cidr]
       source_tags             = null
       source_service_accounts = null
       target_tags             = null
@@ -75,7 +75,7 @@ module "dataproc-firewall-rules" {
       description             = "Allow Dataproc clusters to communicate over private IP to google APIs and other nodes"
       direction               = "EGRESS"
       priority                = 1000
-      ranges                  = [var.dataproc_subnet_ip4_cidr]
+      ranges                  = [var.subnet_ip4_cidr]
       source_tags             = null
       source_service_accounts = null
       target_tags             = null

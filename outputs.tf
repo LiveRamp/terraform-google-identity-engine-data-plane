@@ -24,6 +24,6 @@ output "output_bucket_name" {
 }
 
 output "vpc_network_name" {
-  value       = google_compute_network.vpc_network.name
+  value       = data.google_compute_network.vpc_network.name
   description = "The name of the VPC network"
 }

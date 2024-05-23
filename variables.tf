@@ -95,7 +95,7 @@ variable "idapi_cidr_ip_addresses" {
 }
 
 variable "vpc_network_name" {
-  type        = bool
+  type        = string
   description = "The network to connect the data-plane to, if not specified, module will provision a dedicated one"
   default     = null
 }

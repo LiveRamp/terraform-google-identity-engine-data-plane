@@ -1,5 +1,5 @@
 resource "google_compute_network" "vpc_network" {
-  count                   = try(var.vpc_network_name, false)
+  count                   = (var.vpc_network_name == null || var.vpc_network_name == "") ? 1 : 0
   project                 = var.data_plane_project
   name                    = lower("${var.installation_name}-${var.country_code}-vpc")
   auto_create_subnetworks = false
@@ -9,7 +9,7 @@ resource "google_compute_network" "vpc_network" {
 
 data "google_compute_network" "vpc_network" {
   project = var.data_plane_project
-  name    = try(var.vpc_network_name, google_compute_network.vpc_network[0].name)
+  name    = (var.vpc_network_name == null || var.vpc_network_name == "") ? google_compute_network.vpc_network[0].name : var.vpc_network_name
 }
 
 module "network" {
@@ -18,7 +18,7 @@ module "network" {
   country_code              = var.country_code
   project_id                = var.data_plane_project
   region                    = var.gcp_region
-  network_name              = data.google_compute_network.vpc_network
+  network_name              = data.google_compute_network.vpc_network.name
   subnet_ip4_cidr           = var.dataproc_subnet_ip4_cidr
   subnet_user               = "serviceAccount:${google_service_account.tenant_data_access.email}"
   idapi_cidr_ip_addresses   = var.idapi_cidr_ip_addresses
