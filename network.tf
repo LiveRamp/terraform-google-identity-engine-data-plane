@@ -8,7 +8,7 @@ resource "google_compute_network" "vpc_network" {
 }
 
 data "compute" "vpc_network" {
-  project = data_plane_project
+  project = var.data_plane_project
   name    = try(var.vpc_network_name, google_compute_network.vpc_network[0].name)
 }
 
