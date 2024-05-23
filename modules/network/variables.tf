@@ -2,10 +2,6 @@ variable "installation_name" {
     type = string
 }
 
-variable "country_code" {
-    type = string
-}
-
 variable "project_id" {
     type = string
 }
@@ -22,8 +18,8 @@ variable "subnet_ip4_cidr" {
     type = string
 }
 
-variable "subnet_user" {
-    type = string
+variable "subnet_users" {
+    type = list(string)
 }
 
 variable "metastore_cidr_ip_address" {

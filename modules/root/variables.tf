@@ -94,12 +94,6 @@ variable "idapi_cidr_ip_addresses" {
   description = "Portrait Engine ID-API instance CIDR IP addresses"
 }
 
-variable "vpc_network_name" {
-  type        = string
-  description = "The network to connect the data-plane to, if not specified, module will provision a dedicated one"
-  default     = null
-}
-
 variable "enable_kms" {
   type        = bool
   description = "Configure KMS to encrypt build, input and output buckets"
