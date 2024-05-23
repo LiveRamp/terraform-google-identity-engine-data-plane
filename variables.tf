@@ -41,6 +41,7 @@ variable "gcp_region" {
 variable "dataproc_subnet_ip4_cidr" {
   type        = string
   description = "Subnet used for Dataproc clusters"
+  default     = ""
 }
 
 variable "key_management_location" {
@@ -86,6 +87,7 @@ variable "key_rotation_period_days" {
 variable "metastore_cidr_ip_address" {
   type        = string
   description = "Portrait Engine Metastore CloudSQL instance CIDR IP address"
+  default     = ""
 }
 
 variable "idapi_cidr_ip_addresses" {
