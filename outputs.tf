@@ -22,3 +22,7 @@ output "output_bucket_name" {
   value       = google_storage_bucket.tenant_output_bucket.name
   description = "The name of the GCS bucket that will be used to store the output files"
 }
+
+output "tenant_hmac_key" {
+  value = google_storage_hmac_key.tenant_query_engine_access.id
+}
