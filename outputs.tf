@@ -6,20 +6,12 @@ output "tenant_name" {
   value = var.name
 }
 
-output "tenant_project_id" {
-  value = data.google_project.data_plane_project.id
+output "tenant_project" {
+  value = data.google_project.data_plane_project
 }
 
-output "tenant_project_name" {
-  value = data.google_project.data_plane_project.name
-}
-
-output "tenant_project_number" {
-  value = data.google_project.data_plane_project.number
-}
-
-output "tenant_data_access_service_account_email" {
-  value       = google_service_account.tenant_data_access.email
+output "tenant_data_access_svc_account" {
+  value       = google_service_account.tenant_data_access
   description = "The service account object that will be used to access the tenant data"
 }
 
