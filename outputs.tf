@@ -1,3 +1,15 @@
+output "tenant_organisation_id" {
+  value = var.organisation_id
+}
+
+output "tenant_name" {
+  value = var.name
+}
+
+output "tenant_project" {
+  value = data.google_project.data_plane_project
+}
+
 output "tenant_data_access_svc_account" {
   value       = google_service_account.tenant_data_access
   description = "The service account object that will be used to access the tenant data"
@@ -23,6 +35,6 @@ output "output_bucket_name" {
   description = "The name of the GCS bucket that will be used to store the output files"
 }
 
-output "tenant_hmac_key" {
+output "tenant_hmac_key_id" {
   value = google_storage_hmac_key.this.id
 }
