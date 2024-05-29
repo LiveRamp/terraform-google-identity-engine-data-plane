@@ -24,5 +24,5 @@ output "output_bucket_name" {
 }
 
 output "tenant_hmac_key" {
-  value = google_storage_hmac_key.tenant_query_engine_access.id
+  value = google_storage_hmac_key.this.id
 }
