@@ -51,7 +51,7 @@ data "google_iam_policy" "tenant_build_bucket" {
     ]
   }
   binding {
-    role = "roles/storage.objectAdmin"
+    role = "roles/storage.objectUser"
     members = concat(
       local.prefixed_editor_list,
       [
@@ -128,7 +128,7 @@ data "google_iam_policy" "tenant_output_bucket" {
     ]
   }
   binding {
-    role = "roles/storage.objectAdmin"
+    role = "roles/storage.objectUser"
     members = concat(
       local.prefixed_editor_list,
       [
@@ -204,7 +204,7 @@ data "google_iam_policy" "tenant_input_bucket" {
     ]
   }
   binding {
-    role = "roles/storage.objectAdmin"
+    role = "roles/storage.objectUser"
     members = concat(
       local.prefixed_editor_list,
       [
