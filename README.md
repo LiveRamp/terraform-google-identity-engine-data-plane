@@ -46,7 +46,6 @@ No requirements.
 | [google_storage_bucket_iam_policy.tenant_build_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
 | [google_storage_bucket_iam_policy.tenant_input_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
 | [google_storage_bucket_iam_policy.tenant_output_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
-| [google_storage_hmac_key.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_hmac_key) | resource |
 | [random_id.generator](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [google_iam_policy.tenant_build_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/iam_policy) | data source |
 | [google_iam_policy.tenant_input_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/iam_policy) | data source |
@@ -92,7 +91,6 @@ No requirements.
 | <a name="output_output_bucket_name"></a> [output\_bucket\_name](#output\_output\_bucket\_name) | The name of the GCS bucket that will be used to store the output files |
 | <a name="output_tenant_bigquery_dataset_name"></a> [tenant\_bigquery\_dataset\_name](#output\_tenant\_bigquery\_dataset\_name) | The name of the BigQuery dataset that will be used to store the tenant data |
 | <a name="output_tenant_data_access_svc_account"></a> [tenant\_data\_access\_svc\_account](#output\_tenant\_data\_access\_svc\_account) | The service account object that will be used to access the tenant data |
-| <a name="output_tenant_hmac_key"></a> [tenant\_hmac\_key](#output\_tenant\_hmac\_key) | n/a |
 | <a name="output_tenant_name"></a> [tenant\_name](#output\_tenant\_name) | n/a |
 | <a name="output_tenant_organisation_id"></a> [tenant\_organisation\_id](#output\_tenant\_organisation\_id) | n/a |
 | <a name="output_tenant_project"></a> [tenant\_project](#output\_tenant\_project) | n/a |
