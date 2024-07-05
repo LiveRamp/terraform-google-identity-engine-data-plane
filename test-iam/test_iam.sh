@@ -7,18 +7,18 @@ buckets=($3 $4 $5)
 bqDataset=$6
 
 projectRoles=(
-	roles/iam.serviceAccountUser
-	roles/dataproc.worker
-	roles/dataproc.editor
-	roles/compute.networkUser
-	roles/bigquery.jobUser
-	roles/bigquery.user
-	roles/bigquery.readSessionUser
+   roles/iam.serviceAccountUser
+   roles/dataproc.worker
+   roles/dataproc.editor
+   roles/compute.networkUser
+   roles/bigquery.jobUser
+   roles/bigquery.user
+   roles/bigquery.readSessionUser
 )
 
 bucketRoles=(
-	roles/storage.objectAdmin
-	roles/storage.legacyBucketReader
+   roles/storage.objectAdmin
+   roles/storage.legacyBucketReader
 )
 
 # Project level permissions
