@@ -1,10 +1,11 @@
 #!/bin/sh
 
 project=$1
-member=$2
+tenantSvc=$2
+orchestrationSvc=$3
 
-buckets=($3 $4 $5)
-bqDataset=$6
+buckets=($4 $5 $6)
+bqDataset=$7
 
 projectRoles=(
 	roles/iam.serviceAccountUser
@@ -16,6 +17,8 @@ projectRoles=(
 	roles/bigquery.readSessionUser
 )
 
+impersonationRole=roles/iam.serviceAccountTokenCreator
+
 bucketRoles=(
 	roles/storage.objectAdmin
 	roles/storage.legacyBucketReader
@@ -24,17 +27,16 @@ bucketRoles=(
 bqDatasetRole=WRITER
 
 
-# Project level permissions / roles
-
+# Project level permissions
 echo ""
-echo "Principal: $member"
+echo "Principal: $tenantSvc"
 echo ""
 echo "Resource: $project"
 echo "========"
 
 for i in ${projectRoles[@]}
 do
-   if gcloud beta asset search-all-iam-policies --query policy:$i --project $project | grep -q $member
+   if gcloud beta asset search-all-iam-policies --query policy:$i --project $project | grep -q $tenantSvc
    then
       echo "$i OK"
    else
@@ -43,8 +45,19 @@ do
 done
 
 
-# Resource level permissions
+# Impersonation permissions
+echo ""
+echo "Resource: $orchestrationSvc"
+echo "========"
+if gcloud beta asset search-all-iam-policies --format=json --query policy:$impersonationRole --project $project | jq --arg tenantSvc $tenantSvc '.[] | select(.resource | contains($tenantSvc))' | grep -q $orchestrationSvc
+then
+   echo "$impersonationRole OK"
+else
+   echo "$impersonationRole FAIL"
+fi
 
+
+# Resource level permissions
 # Buckets
 for i in ${buckets[@]}
 do
@@ -53,7 +66,7 @@ do
    echo "========"
    for j in ${bucketRoles[@]}
    do
-      if gcloud storage buckets get-iam-policy gs://$i --format=json | jq --arg role $j '.bindings[] | select(.role==$role)' | grep -q $member
+      if gcloud storage buckets get-iam-policy gs://$i --format=json | jq --arg role $j '.bindings[] | select(.role==$role)' | grep -q $tenantSvc
       then
          echo "$j OK"
       else
@@ -68,7 +81,7 @@ echo ""
 echo "Resource: $bqDataset"
 echo "========"
 
-if bq show --format=json id-graph-gl-dev-tenant-data:$bqDataset | jq --arg role $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $member
+if bq show --format=json id-graph-gl-dev-tenant-data:$bqDataset | jq --arg role $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $tenantSvc
 then
    echo "$bqDatasetRole OK"
 else
