@@ -4,6 +4,7 @@ projectId=$1
 member=$2
 
 buckets=($3 $4 $5)
+bqDataset=$6
 
 bucketRoles=(
 	roles/storage.objectAdmin
@@ -20,13 +21,13 @@ projectRoles=(
 	roles/bigquery.readSessionUser
 )
 
-# Project level roles for service account
+# Project level permissions
 echo ""
 echo "Resource: $member"
 echo "========"
 
 for i in ${projectRoles[@]}
-do 
+do
    if gcloud beta asset search-all-iam-policies --query policy:$i --project $projectId | grep -q $member
    then
       echo "$i OK"
@@ -36,6 +37,7 @@ do
 done
 
 
+# Resource level permissions
 for i in ${buckets[@]}
 do
    echo ""
