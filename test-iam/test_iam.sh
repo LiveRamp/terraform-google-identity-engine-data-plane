@@ -1,6 +1,6 @@
 #!/bin/sh
 
-projectId=$1
+project=$1
 member=$2
 
 buckets=($3 $4 $5)
@@ -23,12 +23,14 @@ projectRoles=(
 
 # Project level permissions
 echo ""
-echo "Resource: $member"
+echo "Principal: $member"
+echo ""
+echo "Resource: $project"
 echo "========"
 
 for i in ${projectRoles[@]}
 do
-   if gcloud beta asset search-all-iam-policies --query policy:$i --project $projectId | grep -q $member
+   if gcloud beta asset search-all-iam-policies --query policy:$i --project $project | grep -q $member
    then
       echo "$i OK"
    else
