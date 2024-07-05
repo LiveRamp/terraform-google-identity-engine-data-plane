@@ -7,21 +7,25 @@ buckets=($3 $4 $5)
 bqDataset=$6
 
 projectRoles=(
-   roles/iam.serviceAccountUser
-   roles/dataproc.worker
-   roles/dataproc.editor
-   roles/compute.networkUser
-   roles/bigquery.jobUser
-   roles/bigquery.user
-   roles/bigquery.readSessionUser
+	roles/iam.serviceAccountUser
+	roles/dataproc.worker
+	roles/dataproc.editor
+	roles/compute.networkUser
+	roles/bigquery.jobUser
+	roles/bigquery.user
+	roles/bigquery.readSessionUser
 )
 
 bucketRoles=(
-   roles/storage.objectAdmin
-   roles/storage.legacyBucketReader
+	roles/storage.objectAdmin
+	roles/storage.legacyBucketReader
 )
 
-# Project level permissions
+bqDatasetRole=WRITER
+
+
+# Project level permissions / roles
+
 echo ""
 echo "Principal: $member"
 echo ""
@@ -40,6 +44,8 @@ done
 
 
 # Resource level permissions
+
+# Buckets
 for i in ${buckets[@]}
 do
    echo ""
@@ -55,3 +61,16 @@ do
       fi
    done
 done
+
+
+# BigQuery
+echo ""
+echo "Resource: $bqDataset"
+echo "========"
+
+if bq show --format=json id-graph-gl-dev-tenant-data:$bqDataset | jq --arg role $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $member
+then
+   echo "$bqDatasetRole OK"
+else
+   echo "$bqDatasetRole FAIL"
+fi
