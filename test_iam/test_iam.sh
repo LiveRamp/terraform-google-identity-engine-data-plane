@@ -39,13 +39,13 @@ checkProjectPermissions() {
 	echo ""
 	echo "Principal: $tenantSvc"
 	printResource $project
-	for i in ${projectRoles[@]}
+	for role in ${projectRoles[@]}
 	do
-		if gcloud beta asset search-all-iam-policies --query policy:$i --project $project | grep -q $tenantSvc
+		if gcloud beta asset search-all-iam-policies --query policy:$role --project $project | grep -q $tenantSvc
 		then
-			echo "$i OK"
+			echo "$role OK"
 		else
-			echo "$i FAIL"
+			echo "$role FAIL"
 		fi
 	done
 }
@@ -61,32 +61,32 @@ checkImpersonationPermissions() {
 }
 
 checkBucketPermissions() {
-	for i in ${buckets[@]}
+	for bucket in ${buckets[@]}
 	do
-		printResource $i
-		for j in ${bucketRoles[@]}
+		printResource $bucket
+		for role in ${bucketRoles[@]}
 		do
-			if gcloud storage buckets get-iam-policy gs://$i --format=json | jq --arg role $j '.bindings[] | select(.role==$role)' | grep -q $tenantSvc
+			if gcloud storage buckets get-iam-policy gs://$bucket --format=json | jq --arg role $role '.bindings[] | select(.role==$role)' | grep -q $tenantSvc
 			then
-				echo "$j OK"
+				echo "$role OK"
 			else
-				echo "$j FAIL"
+				echo "$role FAIL"
 			fi
 		done
 	done
 }
 
 checkBigQueryPermissions() {
-	for i in ${bqDatasets[@]}
+	for dataset in ${bqDatasets[@]}
 	do
-		printResource $i
-		for j in ${bqDatasetRoles[@]}
+		printResource $dataset
+		for role in ${bqDatasetRoles[@]}
 		do
-			if bq show --format=json id-graph-gl-dev-tenant-data:$i | jq --arg $j $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $tenantSvc
+			if bq show --format=json id-graph-gl-dev-tenant-data:$dataset | jq --arg $j $role '.access[] | select(.role==$role)' | grep -q $tenantSvc
 			then
-				echo "$j OK"
+				echo "$role OK"
 			else
-				echo "$j FAIL"
+				echo "$role FAIL"
 			fi
 		done
 	done
