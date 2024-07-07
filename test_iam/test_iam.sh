@@ -27,63 +27,68 @@ bucketRoles=(
 bqDatasetRole=WRITER
 
 
-# Project level permissions
-echo ""
-echo "Principal: $tenantSvc"
-echo ""
-echo "Resource: $project"
-echo "========"
+checkProjectPermissions() {
+	echo ""
+	echo "Principal: $tenantSvc"
+	echo ""
+	echo "Resource: $project"
+	echo "========"
 
-for i in ${projectRoles[@]}
-do
-   if gcloud beta asset search-all-iam-policies --query policy:$i --project $project | grep -q $tenantSvc
-   then
-      echo "$i OK"
-   else
-      echo "$i FAIL"
-   fi
-done
+	for i in ${projectRoles[@]}
+	do
+	   if gcloud beta asset search-all-iam-policies --query policy:$i --project $project | grep -q $tenantSvc
+	   then
+		  echo "$i OK"
+	   else
+		  echo "$i FAIL"
+	   fi
+	done
+}
 
+checkImpersonationPermissions() {
+	echo ""
+	echo "Resource: $orchestrationSvc"
+	echo "========"
+	if gcloud beta asset search-all-iam-policies --format=json --query policy:$impersonationRole --project $project | jq --arg tenantSvc $tenantSvc '.[] | select(.resource | contains($tenantSvc))' | grep -q $orchestrationSvc
+	then
+	   echo "$impersonationRole OK"
+	else
+	   echo "$impersonationRole FAIL"
+	fi
+}
 
-# Impersonation permissions
-echo ""
-echo "Resource: $orchestrationSvc"
-echo "========"
-if gcloud beta asset search-all-iam-policies --format=json --query policy:$impersonationRole --project $project | jq --arg tenantSvc $tenantSvc '.[] | select(.resource | contains($tenantSvc))' | grep -q $orchestrationSvc
-then
-   echo "$impersonationRole OK"
-else
-   echo "$impersonationRole FAIL"
-fi
+checkBucketPermissions() {
+	for i in ${buckets[@]}
+	do
+	   echo ""
+	   echo "Resource: $i"
+	   echo "========"
+	   for j in ${bucketRoles[@]}
+	   do
+		  if gcloud storage buckets get-iam-policy gs://$i --format=json | jq --arg role $j '.bindings[] | select(.role==$role)' | grep -q $tenantSvc
+		  then
+			 echo "$j OK"
+		  else
+			 echo "$j FAIL"
+		  fi
+	   done
+	done
+}
 
+checkBigQueryPermissions() {
+	echo ""
+	echo "Resource: $bqDataset"
+	echo "========"
 
-# Resource level permissions
-# Buckets
-for i in ${buckets[@]}
-do
-   echo ""
-   echo "Resource: $i"
-   echo "========"
-   for j in ${bucketRoles[@]}
-   do
-      if gcloud storage buckets get-iam-policy gs://$i --format=json | jq --arg role $j '.bindings[] | select(.role==$role)' | grep -q $tenantSvc
-      then
-         echo "$j OK"
-      else
-         echo "$j FAIL"
-      fi
-   done
-done
+	if bq show --format=json id-graph-gl-dev-tenant-data:$bqDataset | jq --arg role $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $tenantSvc
+	then
+	   echo "$bqDatasetRole OK"
+	else
+	   echo "$bqDatasetRole FAIL"
+	fi
+}
 
-
-# BigQuery
-echo ""
-echo "Resource: $bqDataset"
-echo "========"
-
-if bq show --format=json id-graph-gl-dev-tenant-data:$bqDataset | jq --arg role $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $tenantSvc
-then
-   echo "$bqDatasetRole OK"
-else
-   echo "$bqDatasetRole FAIL"
-fi
+checkProjectPermissions
+checkImpersonationPermissions
+checkBucketPermissions
+checkBigQueryPermissions
