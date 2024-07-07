@@ -41,12 +41,12 @@ checkProjectPermissions() {
 	printResource $project
 	for i in ${projectRoles[@]}
 	do
-	   if gcloud beta asset search-all-iam-policies --query policy:$i --project $project | grep -q $tenantSvc
-	   then
-		  echo "$i OK"
-	   else
-		  echo "$i FAIL"
-	   fi
+		if gcloud beta asset search-all-iam-policies --query policy:$i --project $project | grep -q $tenantSvc
+		then
+			echo "$i OK"
+		else
+			echo "$i FAIL"
+		fi
 	done
 }
 
@@ -54,42 +54,42 @@ checkImpersonationPermissions() {
 	printResource $orchestrationSvc
 	if gcloud beta asset search-all-iam-policies --format=json --query policy:$impersonationRole --project $project | jq --arg tenantSvc $tenantSvc '.[] | select(.resource | contains($tenantSvc))' | grep -q $orchestrationSvc
 	then
-	   echo "$impersonationRole OK"
+		echo "$impersonationRole OK"
 	else
-	   echo "$impersonationRole FAIL"
+		echo "$impersonationRole FAIL"
 	fi
 }
 
 checkBucketPermissions() {
 	for i in ${buckets[@]}
 	do
-	   printResource $i
-	   for j in ${bucketRoles[@]}
-	   do
-		  if gcloud storage buckets get-iam-policy gs://$i --format=json | jq --arg role $j '.bindings[] | select(.role==$role)' | grep -q $tenantSvc
-		  then
-			 echo "$j OK"
-		  else
-			 echo "$j FAIL"
-		  fi
-	   done
+		printResource $i
+		for j in ${bucketRoles[@]}
+		do
+			if gcloud storage buckets get-iam-policy gs://$i --format=json | jq --arg role $j '.bindings[] | select(.role==$role)' | grep -q $tenantSvc
+			then
+				echo "$j OK"
+			else
+				echo "$j FAIL"
+			fi
+		done
 	done
 }
 
 checkBigQueryPermissions() {
-for i in ${bqDatasets[@]}
-do
-	printResource $i
-	for j in ${bqDatasetRoles[@]}
+	for i in ${bqDatasets[@]}
 	do
-		if bq show --format=json id-graph-gl-dev-tenant-data:$i | jq --arg $j $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $tenantSvc
-		then
-			echo "$j OK"
-		else
-			echo "$j FAIL"
-		fi
+		printResource $i
+		for j in ${bqDatasetRoles[@]}
+		do
+			if bq show --format=json id-graph-gl-dev-tenant-data:$i | jq --arg $j $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $tenantSvc
+			then
+				echo "$j OK"
+			else
+				echo "$j FAIL"
+			fi
+		done
 	done
-done
 }
 
 checkProjectPermissions
