@@ -5,7 +5,7 @@ tenantSvc=$2
 orchestrationSvc=$3
 
 buckets=($4 $5 $6)
-bqDataset=$7
+bqDatasets=($7)
 
 projectRoles=(
 	roles/iam.serviceAccountUser
@@ -24,7 +24,9 @@ bucketRoles=(
 	roles/storage.legacyBucketReader
 )
 
-bqDatasetRole=WRITER
+bqDatasetRoles=(
+	WRITER
+)
 
 
 printResource() {
@@ -32,7 +34,6 @@ printResource() {
 	echo "Resource: $1"
 	echo "========"
 }
-
 
 checkProjectPermissions() {
 	echo ""
@@ -76,13 +77,19 @@ checkBucketPermissions() {
 }
 
 checkBigQueryPermissions() {
-	printResource $bqDataset
-	if bq show --format=json id-graph-gl-dev-tenant-data:$bqDataset | jq --arg role $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $tenantSvc
-	then
-	   echo "$bqDatasetRole OK"
-	else
-	   echo "$bqDatasetRole FAIL"
-	fi
+for i in ${bqDatasets[@]}
+do
+	printResource $i
+	for j in ${bqDatasetRoles[@]}
+	do
+		if bq show --format=json id-graph-gl-dev-tenant-data:$i | jq --arg $j $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $tenantSvc
+		then
+			echo "$j OK"
+		else
+			echo "$j FAIL"
+		fi
+	done
+done
 }
 
 checkProjectPermissions
