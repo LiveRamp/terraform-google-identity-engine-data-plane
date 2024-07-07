@@ -27,13 +27,17 @@ bucketRoles=(
 bqDatasetRole=WRITER
 
 
+printResource() {
+	echo ""
+	echo "Resource: $1"
+	echo "========"
+}
+
+
 checkProjectPermissions() {
 	echo ""
 	echo "Principal: $tenantSvc"
-	echo ""
-	echo "Resource: $project"
-	echo "========"
-
+	printResource $project
 	for i in ${projectRoles[@]}
 	do
 	   if gcloud beta asset search-all-iam-policies --query policy:$i --project $project | grep -q $tenantSvc
@@ -46,9 +50,7 @@ checkProjectPermissions() {
 }
 
 checkImpersonationPermissions() {
-	echo ""
-	echo "Resource: $orchestrationSvc"
-	echo "========"
+	printResource $orchestrationSvc
 	if gcloud beta asset search-all-iam-policies --format=json --query policy:$impersonationRole --project $project | jq --arg tenantSvc $tenantSvc '.[] | select(.resource | contains($tenantSvc))' | grep -q $orchestrationSvc
 	then
 	   echo "$impersonationRole OK"
@@ -60,9 +62,7 @@ checkImpersonationPermissions() {
 checkBucketPermissions() {
 	for i in ${buckets[@]}
 	do
-	   echo ""
-	   echo "Resource: $i"
-	   echo "========"
+	   printResource $i
 	   for j in ${bucketRoles[@]}
 	   do
 		  if gcloud storage buckets get-iam-policy gs://$i --format=json | jq --arg role $j '.bindings[] | select(.role==$role)' | grep -q $tenantSvc
@@ -76,10 +76,7 @@ checkBucketPermissions() {
 }
 
 checkBigQueryPermissions() {
-	echo ""
-	echo "Resource: $bqDataset"
-	echo "========"
-
+	printResource $bqDataset
 	if bq show --format=json id-graph-gl-dev-tenant-data:$bqDataset | jq --arg role $bqDatasetRole '.access[] | select(.role==$role)' | grep -q $tenantSvc
 	then
 	   echo "$bqDatasetRole OK"
