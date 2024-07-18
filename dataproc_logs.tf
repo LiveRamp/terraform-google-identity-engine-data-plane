@@ -1,7 +1,7 @@
 
 locals {
-  groups_log_viewers = toset(var.data_viewers.groups, var.data_editors.groups)
-  users_log_viewers  = toset(var.data_viewers.users, var.data_editors.users)
+  groups_log_viewers = toset(concat(var.data_viewers.groups, var.data_editors.groups))
+  users_log_viewers  = toset(concat(var.data_viewers.users, var.data_editors.users))
 }
 
 resource "google_project_iam_member" "groups_log_viewers" {
