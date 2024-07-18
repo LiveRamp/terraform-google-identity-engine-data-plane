@@ -48,33 +48,3 @@ resource "google_service_account_iam_member" "tenant_orchestration_impersonate_t
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${var.tenant_orchestration_sa}"
 }
-
-#### Custom IAM to allow users access to Dataproc logs via Cloud Logging and Monitoring (FKA Stack Driver)
-resource "google_project_iam_custom_role" "dataproc_logs_viewer" {
-  role_id     = "dataprocLogsViewer"
-  title       = "Dataproc Logs Viewer"
-  description = "Role to view logs for all Dataproc resources"
-  project     = var.data_plane_project
-
-  permissions = [
-    "logging.logEntries.list",
-    "logging.logEntries.view",
-    "logging.logs.list",
-    "logging.logServiceIndexes.list"
-  ]
-}
-
-resource "google_project_iam_member" "dataproc_logs_viewer_binding" {
-  for_each = toset(var.data_viewers.groups)
-  project = var.data_plane_project
-  role    = google_project_iam_custom_role.dataproc_logs_viewer.name
-  member   = "user:${each.value}"
-
-  condition {
-    title       = "DataprocLogAccess"
-    description = "Access to logs from all Dataproc resources"
-    expression  = "resource.type == 'cloud_dataproc_job'"
-  }
-
-  //TODO check if condition for org Id can be used via labels or otherwise (and if it is needed)
-}
