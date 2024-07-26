@@ -9,12 +9,6 @@ resource "google_project_iam_member" "groups_log_viewers" {
   project  = var.data_plane_project
   role     = "roles/logging.viewer"
   member   = "group:${each.value}"
-
-  condition {
-    title       = "DataprocLogAccess"
-    description = "Access to logs from all Dataproc resources"
-    expression  = "resource.type == 'cloud_dataproc_job'"
-  }
 }
 
 resource "google_project_iam_member" "users_log_viewers" {
@@ -22,10 +16,4 @@ resource "google_project_iam_member" "users_log_viewers" {
   project  = var.data_plane_project
   role     = "roles/logging.viewer"
   member   = "user:${each.value}"
-
-  condition {
-    title       = "DataprocLogAccess"
-    description = "Access to logs from all Dataproc resources"
-    expression  = "resource.type == 'cloud_dataproc_job'"
-  }
 }
