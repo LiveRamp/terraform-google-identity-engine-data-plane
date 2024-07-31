@@ -3,10 +3,54 @@ locals {
   bigquery_dataset_name         = coalesce(var.bigquery_dataset_name, local.default_bigquery_dataset_name)
 }
 
+resource "google_bigquery_connection" "bq_spark_connection" {
+  connection_id = "bq-spark-conn-${lower(var.organisation_id)}-${lower(var.country_code)}"
+  location      = var.storage_location
+  description   = "BQ spark connection for ML"
+  spark {
+    spark_history_server_config {
+      dataproc_cluster = google_dataproc_cluster.dataproc_persistent_history_server.id
+    }
+  }
+}
+
+resource "google_dataproc_cluster" "dataproc_persistent_history_server" {
+  name   = "bq-spark-conn-cluster-${lower(var.organisation_id)}-${lower(var.country_code)}"
+  region = var.gcp_region
+
+  cluster_config {
+    software_config {
+      override_properties = {
+        "dataproc:dataproc.allow.zero.workers" = "true"
+      }
+    }
+
+    master_config {
+      num_instances = 1
+      machine_type  = "e2-standard-2"
+      disk_config {
+        boot_disk_size_gb = 50
+      }
+    }
+  }
+}
+
+resource "google_bigquery_connection_iam_binding" "binding" {
+  project = var.data_plane_project
+  location = google_bigquery_connection.bq_spark_connection.location
+  connection_id = google_bigquery_connection.bq_spark_connection.connection_id
+  role = "roles/bigquery.connections.use"
+  members = toset(concat(
+    [for i in var.data_editors.groups : "group:${i}"],
+    [for i in var.data_editors.service_accounts : "serviceAccount:${i}"],
+    [for i in var.data_editors.users : "user:${i}"]
+  ))
+}
+
 resource "google_bigquery_dataset" "tenant_dataset" {
   project       = var.data_plane_project
   dataset_id    = local.bigquery_dataset_name
-  friendly_name = "${title(var.name)} ${upper(var.country_code)} dataset"
+  friendly_name = "${lower(var.organisation_id)}-${lower(var.country_code)}"
   description   = "This dataset is for ${title(var.name)} ${upper(var.country_code)}"
   location      = var.storage_location
 
