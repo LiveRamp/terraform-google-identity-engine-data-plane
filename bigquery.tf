@@ -50,7 +50,7 @@ resource "google_bigquery_connection_iam_binding" "binding" {
 resource "google_bigquery_dataset" "tenant_dataset" {
   project       = var.data_plane_project
   dataset_id    = local.bigquery_dataset_name
-  friendly_name = "${lower(var.organisation_id)}-${lower(var.country_code)}"
+  friendly_name = "${title(var.name)} ${upper(var.country_code)} dataset"
   description   = "This dataset is for ${title(var.name)} ${upper(var.country_code)}"
   location      = var.storage_location
 
