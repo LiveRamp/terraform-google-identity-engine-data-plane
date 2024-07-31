@@ -8,30 +8,7 @@ resource "google_bigquery_connection" "bq_spark_connection" {
   location      = var.storage_location
   description   = "BQ spark connection for ML"
   spark {
-    spark_history_server_config {
-      dataproc_cluster = google_dataproc_cluster.dataproc_persistent_history_server.id
-    }
-  }
-}
 
-resource "google_dataproc_cluster" "dataproc_persistent_history_server" {
-  name   = "bq-spark-conn-cluster-${lower(var.organisation_id)}-${lower(var.country_code)}"
-  region = var.gcp_region
-
-  cluster_config {
-    software_config {
-      override_properties = {
-        "dataproc:dataproc.allow.zero.workers" = "true"
-      }
-    }
-
-    master_config {
-      num_instances = 1
-      machine_type  = "e2-standard-2"
-      disk_config {
-        boot_disk_size_gb = 50
-      }
-    }
   }
 }
 
@@ -40,11 +17,9 @@ resource "google_bigquery_connection_iam_binding" "binding" {
   location = google_bigquery_connection.bq_spark_connection.location
   connection_id = google_bigquery_connection.bq_spark_connection.connection_id
   role = "roles/bigquery.connections.use"
-  members = toset(concat(
-    [for i in var.data_editors.groups : "group:${i}"],
-    [for i in var.data_editors.service_accounts : "serviceAccount:${i}"],
-    [for i in var.data_editors.users : "user:${i}"]
-  ))
+  members = [
+    "serviceAccount:${google_service_account.tenant_data_access.email}",
+  ]
 }
 
 resource "google_bigquery_dataset" "tenant_dataset" {
