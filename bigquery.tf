@@ -7,9 +7,6 @@ resource "google_bigquery_connection" "bq_spark_connection" {
   connection_id = "bq-spark-conn-${lower(var.organisation_id)}-${lower(var.country_code)}"
   location      = var.storage_location
   description   = "BQ spark connection for ML"
-  spark {
-
-  }
 }
 
 resource "google_bigquery_connection_iam_binding" "binding" {
