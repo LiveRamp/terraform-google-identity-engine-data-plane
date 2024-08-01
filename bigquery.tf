@@ -12,11 +12,11 @@ resource "google_bigquery_connection" "bq_spark_connection" {
 }
 
 resource "google_bigquery_connection_iam_member" "member" {
-  project = var.data_plane_project
-  location = google_bigquery_connection.bq_spark_connection.location
+  project       = var.data_plane_project
+  location      = google_bigquery_connection.bq_spark_connection.location
   connection_id = google_bigquery_connection.bq_spark_connection.connection_id
-  role = "roles/bigquery.connections.use"
-  member = "serviceAccount:${google_service_account.tenant_data_access.email}"
+  role          = "roles/bigquery.connectionUser"
+  member        = "serviceAccount:${google_service_account.tenant_data_access.email}"
 }
 
 resource "google_bigquery_dataset" "tenant_dataset" {
