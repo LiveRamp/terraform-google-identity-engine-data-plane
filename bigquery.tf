@@ -8,7 +8,6 @@ resource "google_bigquery_connection" "bq_spark_connection" {
   location      = var.storage_location
   description   = "BQ spark connection for ML"
   cloud_resource {
-    service_account_id = google_service_account.tenant_data_access.email
   }
 }
 
