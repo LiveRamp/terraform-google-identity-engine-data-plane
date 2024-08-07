@@ -12,7 +12,8 @@ resource "google_project_service" "enable_api" {
     "cloudkms.googleapis.com",
     "dataproc.googleapis.com",
     "pubsub.googleapis.com",
-    "logging.googleapis.com"
+    "logging.googleapis.com",
+    "bigqueryconnection.googleapis.com"
   ])
   project = var.data_plane_project
   service = each.value
