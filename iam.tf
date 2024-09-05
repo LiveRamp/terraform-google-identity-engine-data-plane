@@ -48,3 +48,12 @@ resource "google_service_account_iam_member" "tenant_orchestration_impersonate_t
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${var.tenant_orchestration_sa}"
 }
+
+
+resource "google_project_iam_member" "lr_hosted_read_permission" {
+  count             = var.liveramp_eng_docker_image_bool ? 1 : 0
+
+  project           = local.liveramp_shared_project_id
+  member            = "serviceAccount:${google_service_account.tenant_data_access.email}"
+  role              = "roles/artifactregistry.reader"
+}

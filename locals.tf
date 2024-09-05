@@ -1,4 +1,5 @@
 locals {
+  liveramp_shared_project_id           = "liveramp-eng"
   prefixed_dataproc_service_agent_mail = "serviceAccount:service-${data.google_project.data_plane_project.number}@dataproc-accounts.iam.gserviceaccount.com"
 
   # BigQuery encryption service account for use with KMS

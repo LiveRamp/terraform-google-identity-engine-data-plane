@@ -135,3 +135,9 @@ variable "tenant_service_account_name" {
   description = "Service Account name"
   default     = ""
 }
+
+variable "liveramp_eng_docker_image_bool" {
+  type        = bool
+  description = "Liveramp hosted read permissions"
+  default     = false
+}
