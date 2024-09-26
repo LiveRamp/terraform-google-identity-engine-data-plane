@@ -35,3 +35,12 @@ output "output_bucket_name" {
   description = "The name of the GCS bucket that will be used to store the output files"
 }
 
+output "cloud_nat_static_ip_address" {
+  value       = default(google_compute_address.cloud_nat_static_ip_address.address, null)
+  description = "The static IP address for Cloud NAT"
+}
+
+output "dataproc_subnet" {
+  value       = default(google_compute_subnetwork.dataproc_subnet, null)
+  description = "The subnetwork object that will be used by the Dataproc cluster"
+}
