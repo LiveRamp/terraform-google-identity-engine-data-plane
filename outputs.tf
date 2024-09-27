@@ -39,3 +39,8 @@ output "cloud_nat_static_ip_address" {
   value       = coalesce(google_compute_address.cloud_nat_static_ip_address.*.address, [])
   description = "The static IP addresses for Cloud NAT"
 }
+
+output "dataproc_subnet" {
+  value       = coalesce(google_compute_subnetwork.dataproc_subnet[0].id, null)
+  description = "The ID of the Dataproc subnet"
+}
