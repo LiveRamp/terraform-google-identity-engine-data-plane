@@ -38,17 +38,17 @@ output "output_bucket_name" {
   description = "The name of the GCS bucket that will be used to store the output files"
 }
 
-output "ABDCDEF" {
+output "cloud_nat_static_ip_address_0" {
   value       = try(google_compute_address.cloud_nat_static_ip_address[0].address, "")
   description = "The first static IP address for Cloud NAT"
 }
 
-output "KUSH_2" {
+output "cloud_nat_static_ip_address_1" {
   value       = try(google_compute_address.cloud_nat_static_ip_address[1].address, "")
   description = "The second static IP address for Cloud NAT"
 }
 
 output "dataproc_subnet" {
-  value       = try(google_compute_subnetwork.dataproc_subnet, null)
+  value       = try(google_compute_subnetwork.dataproc_subnet.*.name, "")
   description = "The ID of the Dataproc subnet"
 }
