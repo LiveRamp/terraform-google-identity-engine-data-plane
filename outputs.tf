@@ -1,13 +1,21 @@
 output "tenant_organisation_id" {
   value = var.organisation_id
+  description = "The tenant organisation ID"
 }
 
 output "tenant_name" {
   value = var.name
+  description = "The tenant name"
 }
 
 output "tenant_project" {
   value = data.google_project.data_plane_project
+  description = "The tenant project object"
+}
+
+output "tenant_project_id" {
+  value = data.google_project.data_plane_project.project_id
+  description = "The tenant project ID"
 }
 
 output "tenant_data_access_svc_account" {
