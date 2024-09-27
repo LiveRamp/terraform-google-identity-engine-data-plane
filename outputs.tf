@@ -41,6 +41,6 @@ output "cloud_nat_static_ip_address" {
 }
 
 output "dataproc_subnet" {
-  value       = coalesce(google_compute_subnetwork.dataproc_subnet[0].id, null)
+  value       = try(google_compute_subnetwork.dataproc_subnet[0].id, null)
   description = "The ID of the Dataproc subnet"
 }
