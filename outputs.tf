@@ -36,7 +36,7 @@ output "output_bucket_name" {
 }
 
 output "cloud_nat_static_ip_address" {
-  value       = coalesce(google_compute_address.cloud_nat_static_ip_address.*.address, [])
+  value       = coalesce(google_compute_address.cloud_nat_static_ip_address.*.address, null)
   description = "The static IP addresses for Cloud NAT"
 }
 
