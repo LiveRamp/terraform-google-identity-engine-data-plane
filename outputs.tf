@@ -38,8 +38,13 @@ output "output_bucket_name" {
   description = "The name of the GCS bucket that will be used to store the output files"
 }
 
-output "cloud_nat_static_ip_address" {
-  value       = coalescelist(google_compute_address.cloud_nat_static_ip_address.address, null)
+output "cloud_nat_static_ip_address_0" {
+  value       = coalesce(google_compute_address.cloud_nat_static_ip_address[0].address, null)
+  description = "The static IP addresses for Cloud NAT"
+}
+
+output "cloud_nat_static_ip_address_1" {
+  value       = coalesce(google_compute_address.cloud_nat_static_ip_address[1].address, null)
   description = "The static IP addresses for Cloud NAT"
 }
 
