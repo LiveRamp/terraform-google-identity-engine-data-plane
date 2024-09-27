@@ -13,11 +13,6 @@ output "tenant_project" {
   description = "The tenant project object"
 }
 
-output "tenant_project_id" {
-  value = data.google_project.data_plane_project.project_id
-  description = "The tenant project ID"
-}
-
 output "tenant_data_access_svc_account" {
   value       = google_service_account.tenant_data_access
   description = "The service account object that will be used to access the tenant data"
