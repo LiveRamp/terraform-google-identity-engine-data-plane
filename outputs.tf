@@ -1,13 +1,16 @@
 output "tenant_organisation_id" {
   value = var.organisation_id
+  description = "The tenant organisation ID"
 }
 
 output "tenant_name" {
   value = var.name
+  description = "The tenant name"
 }
 
 output "tenant_project" {
   value = data.google_project.data_plane_project
+  description = "The tenant project object"
 }
 
 output "tenant_data_access_svc_account" {
@@ -35,3 +38,17 @@ output "output_bucket_name" {
   description = "The name of the GCS bucket that will be used to store the output files"
 }
 
+output "cloud_nat_static_ip_address_0" {
+  value       = try(google_compute_address.cloud_nat_static_ip_address[0].address, "")
+  description = "The first static IP address for Cloud NAT"
+}
+
+output "cloud_nat_static_ip_address_1" {
+  value       = try(google_compute_address.cloud_nat_static_ip_address[1].address, "")
+  description = "The second static IP address for Cloud NAT"
+}
+
+output "dataproc_subnet" {
+  value       = try(google_compute_subnetwork.dataproc_subnet[0].name, "")
+  description = "The ID of the Dataproc subnet"
+}
