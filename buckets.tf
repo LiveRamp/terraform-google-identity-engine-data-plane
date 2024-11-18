@@ -122,6 +122,12 @@ resource "google_storage_bucket" "tenant_output_bucket" {
 
 data "google_iam_policy" "tenant_output_bucket" {
   binding {
+    role = "roles/storage.admin"
+    members = [
+      "projectOwner:${var.data_plane_project}"
+    ]
+  }
+  binding {
     role = "roles/storage.objectViewer"
     members = concat(
       local.prefixed_reader_list,
@@ -182,6 +188,12 @@ resource "google_storage_bucket" "tenant_input_bucket" {
 }
 
 data "google_iam_policy" "tenant_input_bucket" {
+  binding {
+    role = "roles/storage.admin"
+    members = [
+      "projectOwner:${var.data_plane_project}"
+    ]
+  }
   binding {
     role = "roles/storage.objectViewer"
     members = concat(
