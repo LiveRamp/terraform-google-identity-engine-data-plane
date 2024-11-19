@@ -85,6 +85,7 @@ resource "google_storage_bucket_iam_policy" "tenant_build_bucket" {
 }
 
 resource "google_storage_bucket" "tenant_output_bucket" {
+  count                       = var.create_input_output_buckets ? 1 : 0
   provider                    = google-beta
   depends_on                  = [google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings]
   project                     = var.data_plane_project
@@ -128,6 +129,15 @@ data "google_iam_policy" "tenant_output_bucket" {
     ]
   }
   binding {
+    role = "roles/storage.objectUser"
+    members = concat(
+      local.prefixed_editor_list,
+      [
+        "serviceAccount:${google_service_account.tenant_data_access.email}",
+      ]
+    )
+  }
+  binding {
     role = "roles/storage.objectViewer"
     members = concat(
       local.prefixed_reader_list,
@@ -148,11 +158,13 @@ data "google_iam_policy" "tenant_output_bucket" {
 }
 
 resource "google_storage_bucket_iam_policy" "tenant_output_bucket" {
-  bucket      = google_storage_bucket.tenant_output_bucket.name
+  count       = var.create_input_output_buckets ? 1 : 0
+  bucket      = google_storage_bucket.tenant_output_bucket[0].name
   policy_data = data.google_iam_policy.tenant_output_bucket.policy_data
 }
 
 resource "google_storage_bucket" "tenant_input_bucket" {
+  count                       = var.create_input_output_buckets ? 1 : 0
   provider                    = google-beta
   depends_on                  = [google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings]
   project                     = var.data_plane_project
@@ -195,6 +207,15 @@ data "google_iam_policy" "tenant_input_bucket" {
     ]
   }
   binding {
+    role = "roles/storage.objectUser"
+    members = concat(
+      local.prefixed_editor_list,
+      [
+        "serviceAccount:${google_service_account.tenant_data_access.email}",
+      ]
+    )
+  }
+  binding {
     role = "roles/storage.objectViewer"
     members = concat(
       local.prefixed_reader_list,
@@ -215,6 +236,7 @@ data "google_iam_policy" "tenant_input_bucket" {
 }
 
 resource "google_storage_bucket_iam_policy" "tenant_input_bucket" {
-  bucket      = google_storage_bucket.tenant_input_bucket.name
+  count       = var.create_input_output_buckets ? 1 : 0
+  bucket      = google_storage_bucket.tenant_input_bucket[0].name
   policy_data = data.google_iam_policy.tenant_input_bucket.policy_data
 }

@@ -1,15 +1,15 @@
 output "tenant_organisation_id" {
-  value = var.organisation_id
+  value       = var.organisation_id
   description = "The tenant organisation ID"
 }
 
 output "tenant_name" {
-  value = var.name
+  value       = var.name
   description = "The tenant name"
 }
 
 output "tenant_project" {
-  value = data.google_project.data_plane_project
+  value       = data.google_project.data_plane_project
   description = "The tenant project object"
 }
 
@@ -23,19 +23,9 @@ output "tenant_bigquery_dataset_name" {
   description = "The name of the BigQuery dataset that will be used to store the tenant data"
 }
 
-output "input_bucket_name" {
-  value       = google_storage_bucket.tenant_input_bucket.name
-  description = "The name of the GCS bucket that will be used to store the input files"
-}
-
 output "build_bucket_name" {
   value       = google_storage_bucket.tenant_build_bucket.name
   description = "The name of the GCS bucket that will be used to store the build files"
-}
-
-output "output_bucket_name" {
-  value       = google_storage_bucket.tenant_output_bucket.name
-  description = "The name of the GCS bucket that will be used to store the output files"
 }
 
 output "cloud_nat_static_ip_address_0" {
