@@ -150,7 +150,7 @@ data "google_iam_policy" "tenant_output_bucket" {
 
 resource "google_storage_bucket_iam_policy" "tenant_output_bucket" {
   count       = var.create_input_output_buckets ? 1 : 0
-  bucket      = google_storage_bucket.tenant_output_bucket.name
+  bucket      = google_storage_bucket.tenant_output_bucket[0].name
   policy_data = data.google_iam_policy.tenant_output_bucket.policy_data
 }
 
@@ -219,6 +219,6 @@ data "google_iam_policy" "tenant_input_bucket" {
 
 resource "google_storage_bucket_iam_policy" "tenant_input_bucket" {
   count       = var.create_input_output_buckets ? 1 : 0
-  bucket      = google_storage_bucket.tenant_input_bucket.name
+  bucket      = google_storage_bucket.tenant_input_bucket[0].name
   policy_data = data.google_iam_policy.tenant_input_bucket.policy_data
 }
