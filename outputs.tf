@@ -23,19 +23,9 @@ output "tenant_bigquery_dataset_name" {
   description = "The name of the BigQuery dataset that will be used to store the tenant data"
 }
 
-output "input_bucket_name" {
-  value       = google_storage_bucket.tenant_input_bucket[0].name
-  description = "The name of the GCS bucket that will be used to store the input files"
-}
-
 output "build_bucket_name" {
   value       = google_storage_bucket.tenant_build_bucket.name
   description = "The name of the GCS bucket that will be used to store the build files"
-}
-
-output "output_bucket_name" {
-  value       = google_storage_bucket.tenant_output_bucket[0].name
-  description = "The name of the GCS bucket that will be used to store the output files"
 }
 
 output "cloud_nat_static_ip_address_0" {
