@@ -64,6 +64,7 @@ No requirements.
 | <a name="input_bigquery_dataset_name"></a> [bigquery\_dataset\_name](#input\_bigquery\_dataset\_name) | BigQuery Dataset name | `string` | `""` | no |
 | <a name="input_build_bucket_name"></a> [build\_bucket\_name](#input\_build\_bucket\_name) | GCS Build bucket name | `string` | `""` | no |
 | <a name="input_country_code"></a> [country\_code](#input\_country\_code) | The ISO 3166-1 two character country code (https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) | `string` | n/a | yes |
+| <a name="input_create_input_output_buckets"></a> [create\_input\_output\_buckets](#input\_create\_input\_output\_buckets) | Create managed input and output buckets | `bool` | `true` | no |
 | <a name="input_data_editors"></a> [data\_editors](#input\_data\_editors) | The users, groups & service accounts that should have read & write access to this customers data | <pre>object({<br>    service_accounts = list(string)<br>    groups           = list(string)<br>    users            = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_data_plane_project"></a> [data\_plane\_project](#input\_data\_plane\_project) | The GCP project in which customer data will be stored. | `string` | n/a | yes |
 | <a name="input_data_retention_period_days"></a> [data\_retention\_period\_days](#input\_data\_retention\_period\_days) | The number of days this customers data will be stored before its automatically deleted | `number` | `0` | no |
@@ -94,8 +95,6 @@ No requirements.
 | <a name="output_cloud_nat_static_ip_address_0"></a> [cloud\_nat\_static\_ip\_address\_0](#output\_cloud\_nat\_static\_ip\_address\_0) | The first static IP address for Cloud NAT |
 | <a name="output_cloud_nat_static_ip_address_1"></a> [cloud\_nat\_static\_ip\_address\_1](#output\_cloud\_nat\_static\_ip\_address\_1) | The second static IP address for Cloud NAT |
 | <a name="output_dataproc_subnet"></a> [dataproc\_subnet](#output\_dataproc\_subnet) | The ID of the Dataproc subnet |
-| <a name="output_input_bucket_name"></a> [input\_bucket\_name](#output\_input\_bucket\_name) | The name of the GCS bucket that will be used to store the input files |
-| <a name="output_output_bucket_name"></a> [output\_bucket\_name](#output\_output\_bucket\_name) | The name of the GCS bucket that will be used to store the output files |
 | <a name="output_tenant_bigquery_dataset_name"></a> [tenant\_bigquery\_dataset\_name](#output\_tenant\_bigquery\_dataset\_name) | The name of the BigQuery dataset that will be used to store the tenant data |
 | <a name="output_tenant_data_access_svc_account"></a> [tenant\_data\_access\_svc\_account](#output\_tenant\_data\_access\_svc\_account) | The service account object that will be used to access the tenant data |
 | <a name="output_tenant_name"></a> [tenant\_name](#output\_tenant\_name) | The tenant name |
