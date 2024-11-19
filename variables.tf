@@ -135,3 +135,9 @@ variable "tenant_service_account_name" {
   description = "Service Account name"
   default     = ""
 }
+
+variable "create_input_output_buckets" {
+    type        = bool
+    description = "Create managed input and output buckets"
+    default     = true
+}
