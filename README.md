@@ -96,6 +96,7 @@ No requirements.
 | <a name="output_cloud_nat_static_ip_address_1"></a> [cloud\_nat\_static\_ip\_address\_1](#output\_cloud\_nat\_static\_ip\_address\_1) | The second static IP address for Cloud NAT |
 | <a name="output_dataproc_subnet"></a> [dataproc\_subnet](#output\_dataproc\_subnet) | The ID of the Dataproc subnet |
 | <a name="output_tenant_bigquery_dataset_name"></a> [tenant\_bigquery\_dataset\_name](#output\_tenant\_bigquery\_dataset\_name) | The name of the BigQuery dataset that will be used to store the tenant data |
+| <a name="output_tenant_data_access_email"></a> [tenant\_data\_access\_email](#output\_tenant\_data\_access\_email) | The access email to be impersonated when operating in the tenant data-plane |
 | <a name="output_tenant_data_access_svc_account"></a> [tenant\_data\_access\_svc\_account](#output\_tenant\_data\_access\_svc\_account) | The service account object that will be used to access the tenant data |
 | <a name="output_tenant_name"></a> [tenant\_name](#output\_tenant\_name) | The tenant name |
 | <a name="output_tenant_organisation_id"></a> [tenant\_organisation\_id](#output\_tenant\_organisation\_id) | The tenant organisation ID |
