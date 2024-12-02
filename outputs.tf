@@ -18,6 +18,11 @@ output "tenant_data_access_svc_account" {
   description = "The service account object that will be used to access the tenant data"
 }
 
+output "tenant_data_access_email" {
+  value       = "google_service_account.tenant_data_access.email"
+  description = "The access email to be impersonated when operating in the tenant data-plane"
+}
+
 output "tenant_bigquery_dataset_name" {
   value       = google_bigquery_dataset.tenant_dataset.dataset_id
   description = "The name of the BigQuery dataset that will be used to store the tenant data"
