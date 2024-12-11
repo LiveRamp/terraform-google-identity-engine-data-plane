@@ -102,7 +102,7 @@ variable "enable_dataproc_network" {
 
 variable "enable_kms" {
   type        = bool
-  description = "Configure KMS to encrypt build, input and output buckets"
+  description = "Configure KMS to encrypt build bucket"
   default     = true
 }
 
@@ -112,21 +112,9 @@ variable "bigquery_dataset_name" {
   default     = ""
 }
 
-variable "input_bucket_name" {
-  type        = string
-  description = "GCS Input bucket name"
-  default     = ""
-}
-
 variable "build_bucket_name" {
   type        = string
   description = "GCS Build bucket name"
-  default     = ""
-}
-
-variable "output_bucket_name" {
-  type        = string
-  description = "GCS Output bucket name"
   default     = ""
 }
 
@@ -134,10 +122,4 @@ variable "tenant_service_account_name" {
   type        = string
   description = "Service Account name"
   default     = ""
-}
-
-variable "create_input_output_buckets" {
-  type        = bool
-  description = "Create managed input and output buckets"
-  default     = true
 }
