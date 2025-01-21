@@ -5,10 +5,18 @@ locals {
 
 resource "google_storage_bucket" "tenant_build_bucket" {
   provider                    = google-beta
+  depends_on                  = [google_kms_crypto_key.tenant_crypto_key, module.kms_crypto_key-iam-bindings]
   project                     = var.data_plane_project
   name                        = local.build_bucket_name
   location                    = var.storage_location
   uniform_bucket_level_access = true
+
+  dynamic "encryption" {
+    for_each = var.enable_kms && var.enable_storage_kms_encryption ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
+    content {
+      default_kms_key_name = google_kms_crypto_key.tenant_crypto_key[0].id
+    }
+  }
 
   labels = {
     organisation-id = lower(var.organisation_id)

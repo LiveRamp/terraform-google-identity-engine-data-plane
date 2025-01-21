@@ -38,6 +38,12 @@ variable "storage_location" {
   description = "The storage location for GCS."
 }
 
+variable "enable_storage_kms_encryption" {
+  type        = bool
+  description = "Enable KMS encryption for gcs storage. The encryption key will be in the key_management_location"
+  default     = true
+}
+
 variable "gcp_region" {
   type        = string
   description = "The GCP region to be used"
