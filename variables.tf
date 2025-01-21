@@ -28,9 +28,20 @@ variable "data_plane_project" {
   description = "The GCP project in which customer data will be stored."
 }
 
+variable "bigquery_location" {
+  type        = string
+  description = "The storage location for BigQuery."
+}
+
 variable "storage_location" {
   type        = string
-  description = "The storage location for BigQuery and GCS."
+  description = "The storage location for GCS."
+}
+
+variable "enable_storage_kms_encryption" {
+  type        = bool
+  description = "Enable KMS encryption for gcs storage. The encryption key will be in the key_management_location"
+  default     = true
 }
 
 variable "gcp_region" {
