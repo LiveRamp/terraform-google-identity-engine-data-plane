@@ -56,6 +56,7 @@ No requirements.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_bigquery_dataset_name"></a> [bigquery\_dataset\_name](#input\_bigquery\_dataset\_name) | BigQuery Dataset name | `string` | `""` | no |
+| <a name="input_bigquery_location"></a> [bigquery\_location](#input\_bigquery\_location) | The storage location for BigQuery. | `string` | n/a | yes |
 | <a name="input_build_bucket_name"></a> [build\_bucket\_name](#input\_build\_bucket\_name) | GCS Build bucket name | `string` | `""` | no |
 | <a name="input_country_code"></a> [country\_code](#input\_country\_code) | The ISO 3166-1 two character country code (https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) | `string` | n/a | yes |
 | <a name="input_data_editors"></a> [data\_editors](#input\_data\_editors) | The users, groups & service accounts that should have read & write access to this customers data | <pre>object({<br>    service_accounts = list(string)<br>    groups           = list(string)<br>    users            = list(string)<br>  })</pre> | n/a | yes |
@@ -65,6 +66,7 @@ No requirements.
 | <a name="input_dataproc_subnet_ip4_cidr"></a> [dataproc\_subnet\_ip4\_cidr](#input\_dataproc\_subnet\_ip4\_cidr) | Subnet used for Dataproc clusters | `string` | n/a | yes |
 | <a name="input_enable_dataproc_network"></a> [enable\_dataproc\_network](#input\_enable\_dataproc\_network) | Configure network bits for Dataproc - VPC, firewall rules etc | `bool` | `true` | no |
 | <a name="input_enable_kms"></a> [enable\_kms](#input\_enable\_kms) | Configure KMS to encrypt build bucket | `bool` | `true` | no |
+| <a name="input_enable_storage_kms_encryption"></a> [enable\_storage\_kms\_encryption](#input\_enable\_storage\_kms\_encryption) | Enable KMS encryption for gcs storage. The encryption key will be in the key\_management\_location | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment this infrastructure is supported (eg.: dev, staging or prod) | `string` | n/a | yes |
 | <a name="input_gcp_region"></a> [gcp\_region](#input\_gcp\_region) | The GCP region to be used | `string` | n/a | yes |
 | <a name="input_idapi_cidr_ip_addresses"></a> [idapi\_cidr\_ip\_addresses](#input\_idapi\_cidr\_ip\_addresses) | Portrait Engine ID-API instance CIDR IP addresses | `list(string)` | `[]` | no |
@@ -74,7 +76,7 @@ No requirements.
 | <a name="input_metastore_cidr_ip_address"></a> [metastore\_cidr\_ip\_address](#input\_metastore\_cidr\_ip\_address) | Portrait Engine Metastore CloudSQL instance CIDR IP address | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | The human readable customer name | `string` | n/a | yes |
 | <a name="input_organisation_id"></a> [organisation\_id](#input\_organisation\_id) | Liveramp CAC/Organisation-id | `string` | n/a | yes |
-| <a name="input_storage_location"></a> [storage\_location](#input\_storage\_location) | The storage location for BigQuery and GCS. | `string` | n/a | yes |
+| <a name="input_storage_location"></a> [storage\_location](#input\_storage\_location) | The storage location for GCS. | `string` | n/a | yes |
 | <a name="input_tenant_orchestration_sa"></a> [tenant\_orchestration\_sa](#input\_tenant\_orchestration\_sa) | Tenant Orchestration ServiceAccount for remote execution | `string` | n/a | yes |
 | <a name="input_tenant_service_account_name"></a> [tenant\_service\_account\_name](#input\_tenant\_service\_account\_name) | Service Account name | `string` | `""` | no |
 
