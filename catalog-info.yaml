@@ -9,8 +9,9 @@
   "name": "terraform-google-identity-engine-data-plane"
   "tags":
   - "identity"
-  - "portrait-engine"
+  - "identity-engine"
   - "data-plane"
+  - "gcp"
   - "terraform"
 "spec": {}
 # END TERRAFORM MANAGED BLOCK
