@@ -29,6 +29,7 @@ No requirements.
 | [google_compute_address.cloud_nat_static_ip_address](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
 | [google_compute_firewall.allow_idapi_egress](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_firewall.allow_metastore_egress](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
+| [google_compute_firewall.allow_prometheus_push_gateway_egress](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_network.vpc_network](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_network) | resource |
 | [google_compute_subnetwork.dataproc_subnet](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork) | resource |
 | [google_compute_subnetwork_iam_member.vpc_subnetwork_user](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork_iam_member) | resource |
@@ -76,6 +77,7 @@ No requirements.
 | <a name="input_metastore_cidr_ip_address"></a> [metastore\_cidr\_ip\_address](#input\_metastore\_cidr\_ip\_address) | Portrait Engine Metastore CloudSQL instance CIDR IP address | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | The human readable customer name | `string` | n/a | yes |
 | <a name="input_organisation_id"></a> [organisation\_id](#input\_organisation\_id) | Liveramp CAC/Organisation-id | `string` | n/a | yes |
+| <a name="input_prometheus_push_gateway_addresses"></a> [prometheus\_push\_gateway\_addresses](#input\_prometheus\_push\_gateway\_addresses) | Prometheus Push Gateway Instance CIDR IP addresses | `list(string)` | `[]` | no |
 | <a name="input_storage_location"></a> [storage\_location](#input\_storage\_location) | The storage location for GCS. | `string` | n/a | yes |
 | <a name="input_tenant_orchestration_sa"></a> [tenant\_orchestration\_sa](#input\_tenant\_orchestration\_sa) | Tenant Orchestration ServiceAccount for remote execution | `string` | n/a | yes |
 | <a name="input_tenant_service_account_name"></a> [tenant\_service\_account\_name](#input\_tenant\_service\_account\_name) | Service Account name | `string` | `""` | no |
