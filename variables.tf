@@ -105,6 +105,12 @@ variable "idapi_cidr_ip_addresses" {
   description = "Portrait Engine ID-API instance CIDR IP addresses"
 }
 
+variable "prometheus_push_gateway_addresses" {
+  type        = list(string)
+  default     = []
+  description = "Prometheus Push Gateway Instance CIDR IP addresses"
+}
+
 variable "enable_dataproc_network" {
   type        = bool
   description = "Configure network bits for Dataproc - VPC, firewall rules etc"

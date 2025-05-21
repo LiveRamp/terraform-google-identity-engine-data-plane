@@ -40,6 +40,26 @@ resource "google_compute_firewall" "allow_idapi_egress" {
   destination_ranges = var.idapi_cidr_ip_addresses
 }
 
+resource "google_compute_firewall" "allow_prometheus_push_gateway_egress" {
+  count       = var.enable_dataproc_network ? 1 : 0
+  project     = google_compute_network.vpc_network[0].project
+  name        = "allow-${var.installation_name}-prometheus-push-gateway-egress"
+  network     = google_compute_network.vpc_network[0].name
+  direction   = "EGRESS"
+  priority    = "1000"
+  description = "Allow EGRESS to LiveRamp Prometheus Gateway for metrics collection"
+
+  allow {
+    protocol = "tcp"
+
+    ports = [
+      "443"
+    ]
+  }
+
+  destination_ranges = var.prometheus_push_gateway_addresses
+}
+
 module "dataproc-firewall-rules" {
   count        = var.enable_dataproc_network ? 1 : 0
   source       = "terraform-google-modules/network/google//modules/firewall-rules"
