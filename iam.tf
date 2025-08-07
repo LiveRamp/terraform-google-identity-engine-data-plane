@@ -44,6 +44,7 @@ resource "google_project_iam_member" "allow_bq_connector_push_down" {
 }
 
 resource "google_service_account_iam_member" "tenant_orchestration_impersonate_tenant_data_access_sa" {
+  provider           = google-beta
   service_account_id = google_service_account.tenant_data_access.name
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${var.tenant_orchestration_sa}"
