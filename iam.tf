@@ -47,4 +47,25 @@ resource "google_service_account_iam_member" "tenant_orchestration_impersonate_t
   service_account_id = google_service_account.tenant_data_access.name
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${var.tenant_orchestration_sa}"
+
+  condition {
+    title       = "DataprocClusterAndJobBoundary"
+    description = "Creates a credential access boundary for Dataproc cluster/job operations"
+    expression  = <<-EOT
+      iam.security.accessBoundary(
+        token,
+        [
+          {
+            'resource': 'projects/${var.data_plane_project}/regions/${var.gcp_region}',
+            'permissions': [
+              'dataproc.clusters.create',
+              'dataproc.clusters.delete',
+              'dataproc.jobs.create',
+              'dataproc.jobs.get'
+            ]
+          }
+        ]
+      )
+    EOT
+  }
 }
