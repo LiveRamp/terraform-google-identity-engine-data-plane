@@ -48,3 +48,11 @@ resource "google_service_account_iam_member" "tenant_orchestration_impersonate_t
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${var.tenant_orchestration_sa}"
 }
+
+resource "google_cloud_run_service_iam_binding" "graph_visualiser_invoker" {
+  project  = var.data_plane_project
+  location = var.gcp_region
+  service  = "graph-visualiser-${lower(var.organisation_id)}"
+  role     = "roles/run.invoker"
+  members  = local.graph_visualiser_invokers
+}

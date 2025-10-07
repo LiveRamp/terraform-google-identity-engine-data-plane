@@ -17,4 +17,7 @@ locals {
     [for i in var.data_editors.service_accounts : "serviceAccount:${i}"],
     [for i in var.data_editors.users : "user:${i}"]
   )
+
+  graph_visualiser_invokers = concat(prefixed_reader_list, prefixed_editor_list)
+
 }
