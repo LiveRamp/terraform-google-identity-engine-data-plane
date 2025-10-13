@@ -2,9 +2,9 @@ data "google_project" "data_plane" {
   project_id = var.project_id
 }
 
-data "google_compute_network" "network" {
+data "google_compute_subnetwork" "subnetwork" {
   project = var.project_id
-  name    = var.network
+  name    = "portrait-engine-us-vpc"
 }
 
 resource "google_project_service" "project_service" {
@@ -23,7 +23,8 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
     vpc_access {
       egress = "ALL_TRAFFIC"
       network_interfaces {
-        network = data.google_compute_network.network.id
+        network    = data.google_compute_subnetwork.subnetwork.id
+        subnetwork = "portrait-engine-us-vpc"
       }
     }
     scaling {
@@ -68,7 +69,7 @@ resource "google_iap_web_iam_member" "graph_visualiser_user_access" {
 }
 
 resource "google_project_iam_member" "cloud_run_network_user" {
-  project  = google_cloud_run_v2_service.graph_visualiser.project
-  role     = "roles/compute.networkUser"
-  member   = "serviceAccount:service-${data.google_project.data_plane.number}@serverless-robot-prod.iam.gserviceaccount.com"
+  project = google_cloud_run_v2_service.graph_visualiser.project
+  role    = "roles/compute.networkUser"
+  member  = "serviceAccount:service-${data.google_project.data_plane.number}@serverless-robot-prod.iam.gserviceaccount.com"
 }

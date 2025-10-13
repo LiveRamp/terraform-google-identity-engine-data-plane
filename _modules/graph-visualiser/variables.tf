@@ -27,7 +27,7 @@ variable "authorised_users" {
   default     = []
 }
 
-variable "network" {
-  description = "The network where Graph-Visualiser will run"
+variable "subnetwork" {
+  description = "The subnetwork where Graph-Visualiser will run"
   type        = string
 }
