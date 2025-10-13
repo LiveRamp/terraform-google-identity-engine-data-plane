@@ -20,3 +20,9 @@ variable "kb_dataset" {
   description = "The Identity-Graph knowledge base (KB) dataset name"
   type        = string
 }
+
+variable "authorised_users" {
+  description = "Authorised users to access Graph-Visualiser"
+  type        = list(string)
+  default     = []
+}
