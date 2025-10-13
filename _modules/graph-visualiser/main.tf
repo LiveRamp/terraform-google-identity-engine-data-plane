@@ -8,7 +8,7 @@ data "google_compute_subnetwork" "subnetwork" {
 }
 
 resource "google_project_service" "project_service" {
-  project = data.google_project.data_plane.id
+  project = data.google_project.data_plane.project_id
   service = "iap.googleapis.com"
 }
 
@@ -40,7 +40,7 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
       }
       env {
         name  = "PROJECT_ID"
-        value = data.google_project.data_plane.id
+        value = data.google_project.data_plane.project_id
       }
       env {
         name  = "DATASET"
