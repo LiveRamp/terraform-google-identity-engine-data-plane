@@ -2,6 +2,11 @@ data "google_project" "data_plane" {
   project_id = var.project_id
 }
 
+data "google_compute_network" "network" {
+  project = data.google_project.data_plane.id
+  name    = var.network
+}
+
 resource "google_project_service" "project_service" {
   project = data.google_project.data_plane.id
   service = "iap.googleapis.com"
@@ -18,7 +23,7 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
     vpc_access {
       egress = "ALL_TRAFFIC"
       network_interfaces {
-        network = var.network
+        network = data.google_compute_network.network.self_link
       }
     }
     scaling {
