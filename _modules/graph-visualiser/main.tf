@@ -27,7 +27,7 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
       }
     }
     scaling {
-      max_instance_count = 1
+      max_instance_count = 2
       min_instance_count = 0
     }
     service_account = var.service_account
