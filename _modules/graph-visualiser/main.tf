@@ -1,18 +1,19 @@
+data "google_project" "data_plane" {
+  project_id = var.project_id
+}
+
 resource "google_project_service" "project_service" {
-  project = var.project_id
+  project = google_project.data_plane.id
   service = "iap.googleapis.com"
 }
 
-resource "google_iap_brand" "graph_visualiser_branding" {
-  support_email     = "eng-squad-identity-first-party-graph-backend@liveramp.com"
-  application_title = "Identity-Engine :: Graph Visualiser"
-  project           = var.project_id
-}
-
 resource "google_cloud_run_v2_service" "graph_visualiser" {
-  name     = "graph-visualiser-${lower(var.organisation_id)}"
-  location = "us-central1"
-  ingress  = "INGRESS_TRAFFIC_INTERNAL_ONLY"
+  provider     = google-beta
+  name         = "graph-visualiser-${lower(var.organisation_id)}"
+  location     = "us-central1"
+  ingress      = "INGRESS_TRAFFIC_INTERNAL_ONLY"
+  launch_stage = "BETA"
+  iap_enabled  = true
   template {
     scaling {
       max_instance_count = 1
@@ -27,7 +28,7 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
       }
       env {
         name  = "PROJECT_ID"
-        value = var.project_id
+        value = google_project.data_plane.id
       }
       env {
         name  = "DATASET"
@@ -35,4 +36,14 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
       }
     }
   }
+}
+
+resource "google_cloud_run_v2_service_iam_member" "graph_visualiser_iap_invoker" {
+  depends_on = [google_cloud_run_v2_service.graph_visualiser]
+  provider   = google-beta
+  project    = google_cloud_run_v2_service.graph_visualiser.project
+  location   = google_cloud_run_v2_service.graph_visualiser.location
+  name       = google_cloud_run_v2_service.graph_visualiser.name
+  role       = "roles/run.invoker"
+  member     = "serviceAccount:service-${google_project.data_plane.number}@gcp-sa-iap.iam.gserviceaccount.com"
 }
