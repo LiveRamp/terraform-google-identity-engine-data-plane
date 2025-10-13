@@ -23,7 +23,8 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
     vpc_access {
       egress = "ALL_TRAFFIC"
       network_interfaces {
-        subnetwork    = data.google_compute_subnetwork.subnetwork.name
+        subnetwork = data.google_compute_subnetwork.subnetwork.name
+        network    = data.google_compute_subnetwork.subnetwork.network
       }
     }
     scaling {
