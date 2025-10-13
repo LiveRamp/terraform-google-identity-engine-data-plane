@@ -23,7 +23,7 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
     vpc_access {
       egress = "ALL_TRAFFIC"
       network_interfaces {
-        network    = data.google_compute_subnetwork.subnetwork.id
+        network    = data.google_compute_subnetwork.subnetwork.name
         subnetwork = "portrait-engine-us-vpc"
       }
     }
