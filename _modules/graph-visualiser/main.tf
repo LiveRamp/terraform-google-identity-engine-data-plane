@@ -10,7 +10,7 @@ resource "google_project_service" "project_service" {
 resource "google_cloud_run_v2_service" "graph_visualiser" {
   provider     = google-beta
   name         = "graph-visualiser-${lower(var.organisation_id)}"
-  location     = "us-central1"
+  location     = var.region
   ingress      = "INGRESS_TRAFFIC_INTERNAL_ONLY"
   launch_stage = "BETA"
   iap_enabled  = true
