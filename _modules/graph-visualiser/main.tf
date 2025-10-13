@@ -1,3 +1,14 @@
+resource "google_project_service" "project_service" {
+  project = var.project_id
+  service = "iap.googleapis.com"
+}
+
+resource "google_iap_brand" "graph_visualiser_branding" {
+  support_email     = "eng-squad-identity-first-party-graph-backend@liveramp.com"
+  application_title = "Identity-Engine :: Graph Visualiser"
+  project           = var.project_id
+}
+
 resource "google_cloud_run_v2_service" "graph_visualiser" {
   name     = "graph-visualiser-${lower(var.organisation_id)}"
   location = "us-central1"
