@@ -66,3 +66,9 @@ resource "google_iap_web_iam_member" "graph_visualiser_user_access" {
   role     = "roles/iap.httpsResourceAccessor"
   member   = "user:${each.value}"
 }
+
+resource "google_project_iam_member" "network_user" {
+  project  = google_cloud_run_v2_service.graph_visualiser.project
+  role     = "roles/compute.networkUser"
+  member   = "serviceAccount:${google_service_account.tenant_data_access.email}"
+}
