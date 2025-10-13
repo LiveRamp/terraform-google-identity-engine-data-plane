@@ -24,7 +24,7 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
       egress = "ALL_TRAFFIC"
       network_interfaces {
         subnetwork = data.google_compute_subnetwork.subnetwork.name
-        network    = data.google_compute_subnetwork.subnetwork.network
+        network    = reverse(split("/", data.google_compute_subnetwork.subnetwork.network))[0]
       }
     }
     scaling {
