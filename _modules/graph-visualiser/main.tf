@@ -48,12 +48,10 @@ resource "google_cloud_run_v2_service_iam_member" "graph_visualiser_iap_invoker"
   member     = "serviceAccount:service-${data.google_project.data_plane.number}@gcp-sa-iap.iam.gserviceaccount.com"
 }
 
-resource "google_cloud_run_v2_service_iam_member" "graph_visualiser_user_access" {
+resource "google_iap_web_iam_member" "graph_visualiser_user_access" {
   for_each = var.authorised_users
   provider = google-beta
   project  = google_cloud_run_v2_service.graph_visualiser.project
-  location = google_cloud_run_v2_service.graph_visualiser.location
-  name     = google_cloud_run_v2_service.graph_visualiser.name
   role     = "roles/iap.httpsResourceAccessor"
   member   = "user:${each.value}"
 }
