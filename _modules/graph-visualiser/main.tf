@@ -3,7 +3,7 @@ data "google_project" "data_plane" {
 }
 
 resource "google_project_service" "project_service" {
-  project = google_project.data_plane.id
+  project = data.google_project.data_plane.id
   service = "iap.googleapis.com"
 }
 
@@ -28,7 +28,7 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
       }
       env {
         name  = "PROJECT_ID"
-        value = google_project.data_plane.id
+        value = data.google_project.data_plane.id
       }
       env {
         name  = "DATASET"
@@ -45,5 +45,5 @@ resource "google_cloud_run_v2_service_iam_member" "graph_visualiser_iap_invoker"
   location   = google_cloud_run_v2_service.graph_visualiser.location
   name       = google_cloud_run_v2_service.graph_visualiser.name
   role       = "roles/run.invoker"
-  member     = "serviceAccount:service-${google_project.data_plane.number}@gcp-sa-iap.iam.gserviceaccount.com"
+  member     = "serviceAccount:service-${data.google_project.data_plane.number}@gcp-sa-iap.iam.gserviceaccount.com"
 }
