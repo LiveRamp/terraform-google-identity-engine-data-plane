@@ -4,7 +4,7 @@ data "google_project" "data_plane" {
 
 data "google_compute_subnetwork" "subnetwork" {
   project = var.project_id
-  name    = "portrait-engine-us-vpc"
+  name    = var.subnetwork
 }
 
 resource "google_project_service" "project_service" {
