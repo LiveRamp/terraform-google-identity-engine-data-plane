@@ -23,6 +23,6 @@ variable "kb_dataset" {
 
 variable "authorised_users" {
   description = "Authorised users to access Graph-Visualiser"
-  type        = list(string)
+  type        = set(string)
   default     = []
 }
