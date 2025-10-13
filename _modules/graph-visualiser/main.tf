@@ -49,7 +49,7 @@ resource "google_cloud_run_v2_service_iam_member" "graph_visualiser_iap_invoker"
 }
 
 resource "google_cloud_run_v2_service_iam_member" "graph_visualiser_user_access" {
-  for_each = var.data_viewers.users
+  for_each = var.authorised_users
   provider = google-beta
   project  = google_cloud_run_v2_service.graph_visualiser.project
   location = google_cloud_run_v2_service.graph_visualiser.location
