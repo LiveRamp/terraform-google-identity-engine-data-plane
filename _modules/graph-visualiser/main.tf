@@ -3,7 +3,7 @@ data "google_project" "data_plane" {
 }
 
 data "google_compute_network" "network" {
-  project = data.google_project.data_plane.id
+  project = var.project_id
   name    = var.network
 }
 
