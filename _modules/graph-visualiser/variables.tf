@@ -26,3 +26,8 @@ variable "authorised_users" {
   type        = set(string)
   default     = []
 }
+
+variable "network" {
+  description = "The network where Graph-Visualiser will run"
+  type        = string
+}

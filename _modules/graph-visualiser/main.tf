@@ -15,6 +15,12 @@ resource "google_cloud_run_v2_service" "graph_visualiser" {
   launch_stage = "BETA"
   iap_enabled  = true
   template {
+    vpc_access {
+      egress = "ALL_TRAFFIC"
+      network_interfaces {
+        network = var.network
+      }
+    }
     scaling {
       max_instance_count = 1
       min_instance_count = 0
