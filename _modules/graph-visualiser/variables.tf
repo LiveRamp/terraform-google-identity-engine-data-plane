@@ -21,13 +21,15 @@ variable "kb_dataset" {
   type        = string
 }
 
-variable "authorised_users" {
-  description = "Authorised users to access Graph-Visualiser"
-  type        = set(string)
-  default     = []
-}
-
 variable "subnetwork" {
   description = "The subnetwork where Graph-Visualiser will run"
   type        = string
+}
+
+variable "authorised_users" {
+  type = object({
+    groups = list(string)
+    users  = list(string)
+  })
+  description = "The users and groups that can access the Graph Visualiser"
 }

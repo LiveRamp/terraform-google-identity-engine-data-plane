@@ -1,3 +1,10 @@
+locals {
+  prefixed_authorised_access = concat(
+    [for i in var.authorised_users.groups : "group:${i}"],
+    [for i in var.authorised_users.users : "user:${i}"]
+  )
+}
+
 data "google_project" "data_plane" {
   project_id = var.project_id
 }
@@ -61,11 +68,11 @@ resource "google_cloud_run_v2_service_iam_member" "graph_visualiser_iap_invoker"
 }
 
 resource "google_iap_web_iam_member" "graph_visualiser_user_access" {
-  for_each = var.authorised_users
+  for_each = local.prefixed_authorised_access
   provider = google-beta
   project  = google_cloud_run_v2_service.graph_visualiser.project
   role     = "roles/iap.httpsResourceAccessor"
-  member   = "user:${each.value}"
+  member   = each.prefixed_authorised_access
 }
 
 resource "google_project_iam_member" "cloud_run_network_user" {
