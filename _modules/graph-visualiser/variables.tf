@@ -1,5 +1,6 @@
 variable "organisation_id" {
-  type = string
+  description = "The LiveRamp organisation id"
+  type        = string
 }
 
 variable "project_id" {
@@ -7,12 +8,12 @@ variable "project_id" {
 }
 
 variable "region" {
-  description = "Location for Load Balancer and Cloud Run resource"
+  description = "Location for Cloud Run resource"
   type        = string
 }
 
 variable "service_account" {
-  description = "Cloud Run Service Account"
+  description = "Cloud Run Service Account; This account must have read access to the KB"
   type        = string
 }
 
@@ -32,4 +33,8 @@ variable "authorised_users" {
     users  = set(string)
   })
   description = "The users and groups that can access the Graph Visualiser"
+  default = {
+    groups = []
+    users  = []
+  }
 }
