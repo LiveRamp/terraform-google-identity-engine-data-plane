@@ -72,7 +72,7 @@ resource "google_iap_web_iam_member" "graph_visualiser_user_access" {
   provider = google-beta
   project  = google_cloud_run_v2_service.graph_visualiser.project
   role     = "roles/iap.httpsResourceAccessor"
-  member   = each.prefixed_authorised_access
+  member   = each.value
 }
 
 resource "google_project_iam_member" "cloud_run_network_user" {
