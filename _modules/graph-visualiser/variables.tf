@@ -28,8 +28,8 @@ variable "subnetwork" {
 
 variable "authorised_users" {
   type = object({
-    groups = list(string)
-    users  = list(string)
+    groups = set(string)
+    users  = set(string)
   })
   description = "The users and groups that can access the Graph Visualiser"
 }

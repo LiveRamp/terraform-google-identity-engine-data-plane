@@ -1,8 +1,8 @@
 locals {
-  prefixed_authorised_access = concat(
+  prefixed_authorised_access = toset(concat(
     [for i in var.authorised_users.groups : "group:${i}"],
     [for i in var.authorised_users.users : "user:${i}"]
-  )
+  ))
 }
 
 data "google_project" "data_plane" {
