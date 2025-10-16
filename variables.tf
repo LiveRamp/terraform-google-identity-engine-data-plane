@@ -38,9 +38,9 @@ variable "storage_location" {
   description = "The storage location for GCS."
 }
 
-variable "enable_storage_kms_encryption" {
+variable "enable_encryption" {
   type        = bool
-  description = "Enable KMS encryption for gcs storage. The encryption key will be in the key_management_location"
+  description = "Enable KMS encryption. The encryption key will be in the key_management_location"
   default     = true
 }
 
@@ -114,12 +114,6 @@ variable "prometheus_push_gateway_addresses" {
 variable "enable_dataproc_network" {
   type        = bool
   description = "Configure network bits for Dataproc - VPC, firewall rules etc"
-  default     = true
-}
-
-variable "enable_kms" {
-  type        = bool
-  description = "Configure KMS to encrypt build bucket"
   default     = true
 }
 

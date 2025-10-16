@@ -12,7 +12,7 @@ resource "google_storage_bucket" "tenant_build_bucket" {
   uniform_bucket_level_access = true
 
   dynamic "encryption" {
-    for_each = (var.enable_kms && var.enable_storage_kms_encryption) ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
+    for_each = var.enable_encryption ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
     content {
       default_kms_key_name = google_kms_crypto_key.tenant_crypto_key[0].id
     }

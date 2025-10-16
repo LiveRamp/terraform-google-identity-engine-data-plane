@@ -11,7 +11,7 @@ resource "google_bigquery_dataset" "tenant_dataset" {
   location      = var.bigquery_location
 
   dynamic "default_encryption_configuration" {
-    for_each = var.enable_kms ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
+    for_each = var.enable_storage_kms_encryption ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
     content {
       kms_key_name = google_kms_crypto_key.tenant_crypto_key[0].id
     }
