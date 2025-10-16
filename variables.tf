@@ -117,12 +117,6 @@ variable "enable_dataproc_network" {
   default     = true
 }
 
-variable "enable_kms" {
-  type        = bool
-  description = "Configure KMS to encrypt build bucket"
-  default     = true
-}
-
 variable "bigquery_dataset_name" {
   type        = string
   description = "BigQuery Dataset name"
