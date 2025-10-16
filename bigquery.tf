@@ -3,22 +3,6 @@ locals {
   bigquery_dataset_name         = coalesce(var.bigquery_dataset_name, local.default_bigquery_dataset_name)
 }
 
-resource "google_bigquery_connection" "bq_spark_connection" {
-  connection_id = "bq-spark-conn-${lower(var.organisation_id)}-${lower(var.country_code)}"
-  location      = var.bigquery_location
-  description   = "BQ spark connection for ML Matching"
-  cloud_resource {
-  }
-}
-
-resource "google_bigquery_connection_iam_member" "member" {
-  project       = var.data_plane_project
-  location      = google_bigquery_connection.bq_spark_connection.location
-  connection_id = google_bigquery_connection.bq_spark_connection.connection_id
-  role          = "roles/bigquery.connectionUser"
-  member        = "serviceAccount:${google_service_account.tenant_data_access.email}"
-}
-
 resource "google_bigquery_dataset" "tenant_dataset" {
   project       = var.data_plane_project
   dataset_id    = local.bigquery_dataset_name
@@ -27,7 +11,7 @@ resource "google_bigquery_dataset" "tenant_dataset" {
   location      = var.bigquery_location
 
   dynamic "default_encryption_configuration" {
-    for_each = var.enable_storage_kms_encryption ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
+    for_each = var.enable_encryption ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
     content {
       kms_key_name = google_kms_crypto_key.tenant_crypto_key[0].id
     }
