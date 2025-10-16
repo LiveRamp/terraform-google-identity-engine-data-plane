@@ -18,14 +18,14 @@ locals {
 }
 
 resource "google_kms_key_ring" "kms" {
-  count    = var.enable_kms ? 1 : 0
+  count    = var.enable_storage_kms_encryption ? 1 : 0
   project  = var.data_plane_project
   name     = lower("${var.installation_name}-${var.name}-${var.country_code}-kms")
-  location = var.key_management_location
+  location = var.storage_location
 }
 
 resource "google_kms_crypto_key" "tenant_crypto_key" {
-  count           = var.enable_kms ? 1 : 0
+  count           = var.enable_storage_kms_encryption ? 1 : 0
   name            = lower("${var.installation_name}-${var.name}-${var.country_code}-key")
   key_ring        = google_kms_key_ring.kms[count.index].id
   purpose         = "ENCRYPT_DECRYPT"
@@ -34,7 +34,7 @@ resource "google_kms_crypto_key" "tenant_crypto_key" {
 
 module "kms_crypto_key-iam-bindings" {
   source          = "terraform-google-modules/iam/google//modules/kms_crypto_keys_iam"
-  count           = var.enable_kms ? 1 : 0
+  count           = var.enable_storage_kms_encryption ? 1 : 0
   kms_crypto_keys = [google_kms_crypto_key.tenant_crypto_key[count.index].id]
 
   mode = "additive"

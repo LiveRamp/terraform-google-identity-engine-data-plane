@@ -28,20 +28,9 @@ variable "data_plane_project" {
   description = "The GCP project in which customer data will be stored."
 }
 
-variable "bigquery_location" {
-  type        = string
-  description = "The storage location for BigQuery."
-}
-
 variable "storage_location" {
   type        = string
-  description = "The storage location for GCS."
-}
-
-variable "enable_storage_kms_encryption" {
-  type        = bool
-  description = "Enable KMS encryption for gcs storage. The encryption key will be in the key_management_location"
-  default     = true
+  description = "The storage location"
 }
 
 variable "gcp_region" {
@@ -52,11 +41,6 @@ variable "gcp_region" {
 variable "dataproc_subnet_ip4_cidr" {
   type        = string
   description = "Subnet used for Dataproc clusters"
-}
-
-variable "key_management_location" {
-  type        = string
-  description = "The key management location for KMS"
 }
 
 variable "tenant_orchestration_sa" {
@@ -117,12 +101,6 @@ variable "enable_dataproc_network" {
   default     = true
 }
 
-variable "enable_kms" {
-  type        = bool
-  description = "Configure KMS to encrypt build bucket"
-  default     = true
-}
-
 variable "bigquery_dataset_name" {
   type        = string
   description = "BigQuery Dataset name"
@@ -139,4 +117,11 @@ variable "tenant_service_account_name" {
   type        = string
   description = "Service Account name"
   default     = ""
+}
+
+# -- Storage configuration
+variable "enable_storage_kms_encryption" {
+  type        = bool
+  description = "Enable KMS encryption for GCS storage"
+  default     = true
 }
