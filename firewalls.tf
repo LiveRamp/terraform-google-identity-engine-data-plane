@@ -1,5 +1,5 @@
 resource "google_compute_firewall" "allow_metastore_egress" {
-  count       = var.enable_dataproc_network ? 1 : 0
+  count       = var.configure_network ? 1 : 0
   project     = google_compute_network.vpc_network[0].project
   name        = "allow-${var.installation_name}-metastore-egress"
   network     = google_compute_network.vpc_network[0].name
@@ -21,7 +21,7 @@ resource "google_compute_firewall" "allow_metastore_egress" {
 }
 
 resource "google_compute_firewall" "allow_idapi_egress" {
-  count       = var.enable_dataproc_network ? 1 : 0
+  count       = var.configure_network ? 1 : 0
   project     = google_compute_network.vpc_network[0].project
   name        = "allow-${var.installation_name}-idapi-egress"
   network     = google_compute_network.vpc_network[0].name
@@ -41,7 +41,7 @@ resource "google_compute_firewall" "allow_idapi_egress" {
 }
 
 resource "google_compute_firewall" "allow_prometheus_push_gateway_egress" {
-  count       = var.enable_dataproc_network ? 1 : 0
+  count       = var.configure_network ? 1 : 0
   project     = google_compute_network.vpc_network[0].project
   name        = "allow-${var.installation_name}-prometheus-push-gateway-egress"
   network     = google_compute_network.vpc_network[0].name
@@ -61,7 +61,7 @@ resource "google_compute_firewall" "allow_prometheus_push_gateway_egress" {
 }
 
 module "dataproc-firewall-rules" {
-  count        = var.enable_dataproc_network ? 1 : 0
+  count        = var.configure_network ? 1 : 0
   source       = "terraform-google-modules/network/google//modules/firewall-rules"
   version      = "6.0.1"
   project_id   = var.data_plane_project

@@ -1,6 +1,5 @@
 locals {
-  default_tenant_service_account_name = lower("${var.name}-${random_id.generator.hex}")
-  tenant_service_account_name         = coalesce(var.tenant_service_account_name, local.default_tenant_service_account_name)
+  tenant_service_account_name = lower("${var.name}-${random_id.generator.hex}")
 }
 
 resource "random_id" "generator" {

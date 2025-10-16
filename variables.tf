@@ -40,7 +40,7 @@ variable "storage_location" {
 
 variable "enable_storage_kms_encryption" {
   type        = bool
-  description = "Enable KMS encryption for gcs storage. The encryption key will be in the key_management_location"
+  description = "Enable KMS encryption for storage. The encryption key will be in the key_management_location"
   default     = true
 }
 
@@ -111,32 +111,19 @@ variable "prometheus_push_gateway_addresses" {
   description = "Prometheus Push Gateway Instance CIDR IP addresses"
 }
 
-variable "enable_dataproc_network" {
-  type        = bool
-  description = "Configure network bits for Dataproc - VPC, firewall rules etc"
-  default     = true
+variable "configure_network" {
+  type = bool
+  default = false
 }
 
-variable "enable_kms" {
-  type        = bool
-  description = "Configure KMS to encrypt build bucket"
-  default     = true
+variable "network" {
+  type = string
+  description = "(Optional) The compute engine network to be used for machine communications, specified as self-link, relative resource name (for example, 'projects/{project}/regions/{region}/subnetworks/{network}'), or by name"
+  default = "default"
 }
 
-variable "bigquery_dataset_name" {
-  type        = string
-  description = "BigQuery Dataset name"
-  default     = ""
-}
-
-variable "build_bucket_name" {
-  type        = string
-  description = "GCS Build bucket name"
-  default     = ""
-}
-
-variable "tenant_service_account_name" {
-  type        = string
-  description = "Service Account name"
-  default     = ""
+variable "subnetwork" {
+  type = string
+  description = "(Optional) The compute engine subnetwork to be used for machine communications, specified as self-link, relative resource name (for example, 'projects/{project}/regions/{region}/subnetworks/{subnetwork}'), or by name"
+  default = "default"
 }

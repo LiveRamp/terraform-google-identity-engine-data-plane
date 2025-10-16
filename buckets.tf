@@ -1,6 +1,5 @@
 locals {
-  default_build_bucket_name = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-build")
-  build_bucket_name         = coalesce(var.build_bucket_name, local.default_build_bucket_name)
+  build_bucket_name = lower("${var.installation_name}-${var.environment}-${var.name}-${var.country_code}-build")
 }
 
 resource "google_storage_bucket" "tenant_build_bucket" {
@@ -12,7 +11,7 @@ resource "google_storage_bucket" "tenant_build_bucket" {
   uniform_bucket_level_access = true
 
   dynamic "encryption" {
-    for_each = (var.enable_kms && var.enable_storage_kms_encryption) ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
+    for_each = var.enable_storage_kms_encryption ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
     content {
       default_kms_key_name = google_kms_crypto_key.tenant_crypto_key[0].id
     }
