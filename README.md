@@ -66,8 +66,7 @@ No requirements.
 | <a name="input_data_viewers"></a> [data\_viewers](#input\_data\_viewers) | The users, groups & service accounts that should have read only access to this customers data | <pre>object({<br>    service_accounts = list(string)<br>    groups           = list(string)<br>    users            = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_dataproc_subnet_ip4_cidr"></a> [dataproc\_subnet\_ip4\_cidr](#input\_dataproc\_subnet\_ip4\_cidr) | Subnet used for Dataproc clusters | `string` | n/a | yes |
 | <a name="input_enable_dataproc_network"></a> [enable\_dataproc\_network](#input\_enable\_dataproc\_network) | Configure network bits for Dataproc - VPC, firewall rules etc | `bool` | `true` | no |
-| <a name="input_enable_kms"></a> [enable\_kms](#input\_enable\_kms) | Configure KMS to encrypt build bucket | `bool` | `true` | no |
-| <a name="input_enable_storage_kms_encryption"></a> [enable\_storage\_kms\_encryption](#input\_enable\_storage\_kms\_encryption) | Enable KMS encryption for gcs storage. The encryption key will be in the key\_management\_location | `bool` | `true` | no |
+| <a name="input_enable_encryption"></a> [enable\_encryption](#input\_enable\_encryption) | Enable KMS encryption. The encryption key will be in the key\_management\_location | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment this infrastructure is supported (eg.: dev, staging or prod) | `string` | n/a | yes |
 | <a name="input_gcp_region"></a> [gcp\_region](#input\_gcp\_region) | The GCP region to be used | `string` | n/a | yes |
 | <a name="input_idapi_cidr_ip_addresses"></a> [idapi\_cidr\_ip\_addresses](#input\_idapi\_cidr\_ip\_addresses) | Portrait Engine ID-API instance CIDR IP addresses | `list(string)` | `[]` | no |
