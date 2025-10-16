@@ -23,8 +23,6 @@ No requirements.
 | Name | Type |
 |------|------|
 | [google-beta_google_storage_bucket.tenant_build_bucket](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_storage_bucket) | resource |
-| [google_bigquery_connection.bq_spark_connection](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_connection) | resource |
-| [google_bigquery_connection_iam_member.member](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_connection_iam_member) | resource |
 | [google_bigquery_dataset.tenant_dataset](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_dataset) | resource |
 | [google_compute_address.cloud_nat_static_ip_address](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
 | [google_compute_firewall.allow_idapi_egress](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
