@@ -10,7 +10,7 @@ data "google_project" "data_plane" {
 }
 
 data "google_compute_subnetwork" "subnetwork" {
-  self_link = var.subnetwork
+  id = var.subnetwork
 }
 
 resource "google_project_service" "project_service" {
