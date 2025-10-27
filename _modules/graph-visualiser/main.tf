@@ -7,6 +7,7 @@ locals {
   # projects/{{project}}/regions/{{region}}/subnetworks/{{name}}
   subnet_parts   = split("/", var.subnetwork)
   subnet_project = local.subnet_parts[1]
+  subnet_region  = local.subnet_parts[3]
   subnet_name    = local.subnet_parts[5]
 }
 
@@ -17,6 +18,7 @@ data "google_project" "data_plane" {
 data "google_compute_subnetwork" "subnetwork" {
   project = local.subnet_project
   name    = local.subnet_name
+  region  = local.subnet_region
 }
 
 resource "google_project_service" "project_service" {
