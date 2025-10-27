@@ -23,7 +23,7 @@ variable "kb_dataset" {
 }
 
 variable "subnetwork" {
-  description = "The subnetwork where Graph-Visualiser will run"
+  description = "The subnetwork where Graph-Visualiser will run (self_link format)"
   type        = string
 }
 
