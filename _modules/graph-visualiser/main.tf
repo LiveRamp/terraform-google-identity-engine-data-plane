@@ -3,6 +3,12 @@ locals {
     [for i in var.authorised_users.groups : "group:${i}"],
     [for i in var.authorised_users.users : "user:${i}"]
   ))
+
+  # projects/{{project}}/regions/{{region}}/subnetworks/{{name}}
+  subnet_parts   = split("/", var.subnetwork)
+  subnet_project = local.subnet_parts[1]
+  subnet_region  = local.subnet_parts[3]
+  subnet_name    = local.subnet_parts[5]
 }
 
 data "google_project" "data_plane" {
@@ -10,8 +16,9 @@ data "google_project" "data_plane" {
 }
 
 data "google_compute_subnetwork" "subnetwork" {
-  project = var.project_id
-  name    = var.subnetwork
+  project = local.subnet_project
+  name    = local.subnet_name
+  region  = local.subnet_region
 }
 
 resource "google_project_service" "project_service" {
